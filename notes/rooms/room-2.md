@@ -3,7 +3,7 @@
 # Room 2
 
 
-- **Description**: A dark smelly stone hall.
+- **Description**: A small square room.
 - **Enemies**:
   - 2x Bat
   - 1x Goblin
