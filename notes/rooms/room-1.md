@@ -3,6 +3,8 @@
 
 - **Description**: A dark smelly stone hall.
 - **Enemies**: None
-- **Loot** None
+- **Loot / Starting Gear**:
+  - Healing Potion (15 HP)
+  - Rusty Sword (10 DMG)
 - **Exits** 
   - North - [Room 2](./room-2.md)

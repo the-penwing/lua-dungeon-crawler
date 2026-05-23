@@ -7,7 +7,6 @@
 - **Enemies**:
   - 2x Bat
   - 1x Goblin
-- **Loot**
-  - Rusty Sword
+- **Loot**: None
 - **Exits** 
   - East - [Room 3](./room-3.md)
