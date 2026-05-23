@@ -5,4 +5,4 @@
 - **Max Health**: 20
 - **Damage**: 5
 - **Loot**:
-  - Gold Coin
+  - [Gold Coin](../items/loot/gold-coin.md)
