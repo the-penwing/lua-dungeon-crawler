@@ -6,6 +6,7 @@ local game = {
 		health = 100,
 		maxHealth = 100,
 		mp = 20,
+		maxMP = 20,
 		spellCooldown = false,
 		currentRoom = 1,
 		equippedWeapon = items.weapons.rusty_sword,

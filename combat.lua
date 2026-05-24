@@ -108,6 +108,9 @@ local function awardLoot(enemy)
 		end
 	end
 end
+local function regenMP()
+	game.player.mp = math.min(game.player.mp + 2, game.player.maxMP)
+end
 
 local function selectTarget(enemies)
 	while true do
@@ -235,6 +238,9 @@ local function combatLoop(enemies)
 		if choice ~= 2 then
 			game.player.spellCooldown = false
 		end
+
+		-- Regen MP every turn
+		regenMP()
 	end
 
 	-- After loop: check result
