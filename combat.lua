@@ -141,39 +141,51 @@ end
 
 local function choiceSpell(enemies)
 	local spellValid = false
-	repeat
-		print("\nSelect a spell: ")
-		print("\n1) " .. spells.fireball.name .. " - " .. spells.fireball.cost .. "MP")
-		print("  " .. spells.fireball.description)
-		print("\n2) " .. spells.healing_whisper.name .. " - " .. spells.healing_whisper.cost .. "MP")
-		print("  " .. spells.healing_whisper.description)
+	if game.player.spellCooldown then
+		print("you can't cast spells this turn, wait until next turn")
+		return false
+	else
+		repeat
+			print("\nselect a spell: ")
+			print("\n1) " .. spells.fireball.name .. " - " .. spells.fireball.cost .. "MP")
+			print("  " .. spells.fireball.description)
+			print("\n2) " .. spells.healing_whisper.name .. " - " .. spells.healing_whisper.cost .. "MP")
+			print("  " .. spells.healing_whisper.description)
+			print("\n3) return to action menu")
 
-		io.write("Spell (1-2): ")
-		local spellChoice = tonumber(io.read())
+			io.write("spell (1-3): ")
+			local spellChoice = tonumber(io.read())
 
-		if spellChoice == 1 then
-			if game.player.mp >= 3 then
-				local targetIndex, target = selectTarget(enemies)
-				spells.castFireball(target)
-				if target.health <= 0 then
-					awardLoot(target)
-					table.remove(enemies, targetIndex)
+			if spellChoice == 1 then
+				if game.player.mp >= 3 then
+					local targetIndex, target = selectTarget(enemies)
+					spells.castFireball(target)
+					game.player.spellCooldown = true
+					if target.health <= 0 then
+						awardLoot(target)
+						table.remove(enemies, targetIndex)
+					end
+					spellValid = true
+				else
+					print("not enough MP!")
 				end
-				spellValid = true
+			elseif spellChoice == 2 then
+				if game.player.mp >= 3 then
+					spells.castHealingWhisper()
+					game.player.spellCooldown = true
+					spellValid = true
+				else
+					print("not enough MP!")
+				end
+			elseif spellChoice == 3 then
+				print("returning to action menu")
+				return false
 			else
-				print("Not enough MP!")
+				print("invalid spell!")
 			end
-		elseif spellChoice == 2 then
-			if game.player.mp >= 3 then
-				spells.castHealingWhisper()
-				spellValid = true
-			else
-				print("Not enough MP!")
-			end
-		else
-			print("Invalid spell!")
-		end
-	until spellValid == true
+		until spellValid == true
+	end
+	return true
 end
 
 local function choiceItem()
@@ -193,17 +205,17 @@ local function choiceItem()
 end
 local function combatLoop(enemies)
 	while #enemies > 0 and game.player.health > 0 do
-		-- 1. Display state
+		-- 1. Display state and clear spell spell cooldown
 		ui.displayCombatState(enemies)
 
 		-- 2. Get player action (1-4)
 		local choice = getPlayerAction()
-
+		local actionFinished = false
 		-- 3. Execute action based on choice
 		if choice == 1 then
 			choiceAttack(enemies)
 		elseif choice == 2 then
-			choiceSpell(enemies)
+			actionFinished = choiceSpell(enemies)
 		elseif choice == 3 then
 			choiceItem()
 		elseif choice == 4 then
@@ -214,9 +226,14 @@ local function combatLoop(enemies)
 			-- If flee fails, just continue to enemy turn
 		end
 
-		-- 4. Enemy turn (if enemies remain)
-		for _, enemy in ipairs(enemies) do
-			enemyAttack(enemy)
+		-- 4. Enemy turn (if enemies remain and action compleated)
+		if actionFinished then
+			for _, enemy in ipairs(enemies) do
+				enemyAttack(enemy)
+			end
+		end
+		if choice ~= 2 then
+			game.player.spellCooldown = false
 		end
 	end
 
