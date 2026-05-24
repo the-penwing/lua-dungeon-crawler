@@ -6,7 +6,6 @@ local function formatInventory(inventory)
 	end
 	return table.concat(items, ", ")
 end
-
 local function formatEnemies(enemies)
 	local opponents = {}
 	for _, opponent in ipairs(enemies) do
@@ -45,9 +44,17 @@ local function displayEnemies()
 	end
 end
 
+local function displayCombatState()
+	print("Your Stats:")
+	print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
+	print("  Equipped Weapon: " .. game.player.equippedWeapon.name)
+	displayEnemies()
+end
+
 return {
 	displayGameState = displayGameState,
 	displayRoomDescription = displayRoomDescription,
 	displayEnemies = displayEnemies,
 	formatInventory = formatInventory,
+	displayCombatState = displayCombatState,
 }
