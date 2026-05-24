@@ -129,71 +129,83 @@ local function selectTarget(enemies)
 		end
 	end
 end
+
+local function choiceAttack(enemies)
+	local targetIndex, target = selectTarget(enemies)
+	playerAttack(target)
+	if target.health <= 0 then
+		awardLoot(target)
+		table.remove(enemies, targetIndex)
+	end
+end
+
+local function choiceSpell(enemies)
+	local spellValid = false
+	repeat
+		print("\nSelect a spell: ")
+		print("\n1) " .. spells.fireball.name .. " - " .. spells.fireball.cost .. "MP")
+		print("  " .. spells.fireball.description)
+		print("\n2) " .. spells.healing_whisper.name .. " - " .. spells.healing_whisper.cost .. "MP")
+		print("  " .. spells.healing_whisper.description)
+
+		io.write("Spell (1-2): ")
+		local spellChoice = tonumber(io.read())
+
+		if spellChoice == 1 then
+			if game.player.mp >= 3 then
+				local targetIndex, target = selectTarget(enemies)
+				spells.castFireball(target)
+				if target.health <= 0 then
+					awardLoot(target)
+					table.remove(enemies, targetIndex)
+				end
+				spellValid = true
+			else
+				print("Not enough MP!")
+			end
+		elseif spellChoice == 2 then
+			if game.player.mp >= 3 then
+				spells.castHealingWhisper()
+				spellValid = true
+			else
+				print("Not enough MP!")
+			end
+		else
+			print("Invalid spell!")
+		end
+	until spellValid == true
+end
+
+local function choiceItem()
+	-- Display items
+	local inventory = game.player.inventory
+	print("Select an item:")
+	for i, item in ipairs(inventory) do
+		print(i .. ") " .. item.name .. " (x" .. item.quantity .. ")")
+	end
+
+	-- Get item choice
+	io.write("Item (1-" .. #inventory .. "): ")
+	local itemIndex = tonumber(io.read())
+
+	-- Validate and use
+	useItem(itemIndex)
+end
 local function combatLoop(enemies)
 	while #enemies > 0 and game.player.health > 0 do
 		-- 1. Display state
 		ui.displayCombatState(enemies)
 
-		-- 2. Get player action (1-3)
+		-- 2. Get player action (1-4)
 		local choice = getPlayerAction()
 
 		-- 3. Execute action based on choice
 		if choice == 1 then
-			local targetIndex, target = selectTarget(enemies)
-			playerAttack(target)
-			if target.health <= 0 then
-				awardLoot(target)
-				table.remove(enemies, targetIndex)
-			end
+			choiceAttack(enemies)
 		elseif choice == 2 then
-			local spellValid = false
-			repeat
-				print("\nSelect a spell: ")
-				print("\n1) " .. spells.fireball.name .. " - " .. spells.fireball.cost .. "MP")
-				print("  " .. spells.fireball.description)
-				print("\n2) " .. spells.healing_whisper.name .. " - " .. spells.healing_whisper.cost .. "MP")
-				print("  " .. spells.healing_whisper.description)
-
-				io.write("Spell (1-2): ")
-				local spellChoice = tonumber(io.read())
-
-				if spellChoice == 1 then
-					if game.player.mp >= 3 then
-						local targetIndex, target = selectTarget(enemies)
-						spells.castFireball(target)
-						if target.health <= 0 then
-							awardLoot(target)
-							table.remove(enemies, targetIndex)
-						end
-						spellValid = true
-					else
-						print("Not enough MP!")
-					end
-				elseif spellChoice == 2 then
-					if game.player.mp >= 3 then
-						spells.castHealingWhisper()
-						spellValid = true
-					else
-						print("Not enough MP!")
-					end
-				else
-					print("Invalid spell!")
-				end
-			until spellValid == true
+			choiceSpell(enemies)
 		elseif choice == 3 then
-			-- Display items
-			local inventory = game.player.inventory
-			print("Select an item:")
-			for i, item in ipairs(inventory) do
-				print(i .. ") " .. item.name .. " (x" .. item.quantity .. ")")
-			end
-
-			-- Get item choice
-			io.write("Item (1-" .. #inventory .. "): ")
-			local itemIndex = tonumber(io.read())
-
-			-- Validate and use
-			useItem(itemIndex)
+			choiceItem()
 		elseif choice == 4 then
 			if attemptFlee() then
 				game.player.health = math.ceil(game.player.health * 1.5)
