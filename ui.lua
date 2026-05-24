@@ -24,6 +24,8 @@ local function displayGameState()
 	print("Player Stats:")
 	if game.player.health > 0 then
 		print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
+		print("  MP: " .. game.player.mp .. "/" .. game.player.maxMP)
+		print("  Equipped Weapon: " .. game.player.equippedWeapon.name)
 		print("  Inventory: " .. formatInventory(game.player.inventory))
 		print("  Current Room: " .. game.player.currentRoom)
 	else
@@ -53,6 +55,7 @@ end
 local function displayCombatState(enemies)
 	print("Your Stats:")
 	print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
+	print("  MP: " .. game.player.mp .. "/" .. game.player.maxMP)
 	print("  Equipped Weapon: " .. game.player.equippedWeapon.name)
 	displayEnemies(enemies)
 end

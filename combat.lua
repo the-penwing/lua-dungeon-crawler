@@ -119,27 +119,35 @@ local function selectTarget(enemies)
 		for i, enemy in ipairs(enemies) do
 			print(i .. ") " .. enemy.name .. " (" .. enemy.health .. "/" .. enemy.maxHealth .. ")")
 		end
+		print((#enemies + 1) .. ") return to action menu")
 
 		-- Get target choice
-		io.write("Target (1-" .. #enemies .. "): ")
+		io.write("Target (1-" .. #enemies + 1 .. "): ")
 		local targetIndex = tonumber(io.read())
 
 		-- Validate
-		if targetIndex and targetIndex >= 1 and targetIndex <= #enemies then
+		if targetIndex == #enemies + 1 then
+			return nil, nil -- Signal: they picked back
+		elseif targetIndex and targetIndex >= 1 and targetIndex <= #enemies then
 			return targetIndex, enemies[targetIndex]
 		else
-			print("Invalid target!")
+			print("invalid target!")
 		end
 	end
 end
 
 local function choiceAttack(enemies)
 	local targetIndex, target = selectTarget(enemies)
+	if target == nil then
+		print("returning to action menu.")
+		return false
+	end
 	playerAttack(target)
 	if target.health <= 0 then
 		awardLoot(target)
 		table.remove(enemies, targetIndex)
 	end
+	return true
 end
 
 local function choiceSpell(enemies)
@@ -194,17 +202,27 @@ end
 local function choiceItem()
 	-- Display items
 	local inventory = game.player.inventory
+	if #inventory == 0 then
+		print("you have no items!")
+		print("returning to action menu.")
+		return false
+	end
 	print("Select an item:")
 	for i, item in ipairs(inventory) do
 		print(i .. ") " .. item.name .. " (x" .. item.quantity .. ")")
 	end
+	print((#inventory + 1) .. ") return to action menu")
 
 	-- Get item choice
-	io.write("Item (1-" .. #inventory .. "): ")
+	io.write("Item (1-" .. #inventory + 1 .. "): ")
 	local itemIndex = tonumber(io.read())
-
+	if itemIndex == #inventory + 1 then
+		print("returning to action menu.")
+		return false
+	end
 	-- Validate and use
 	useItem(itemIndex)
+	return true
 end
 local function combatLoop(enemies)
 	while #enemies > 0 and game.player.health > 0 do
@@ -220,7 +238,7 @@ local function combatLoop(enemies)
 		elseif choice == 2 then
 			actionFinished = choiceSpell(enemies)
 		elseif choice == 3 then
-			choiceItem()
+			actionFinished = choiceItem()
 		elseif choice == 4 then
 			if attemptFlee() then
 				game.player.health = math.ceil(game.player.health * 1.5)
