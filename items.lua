@@ -1,8 +1,8 @@
 local items = {
 	weapons = {
-		rusty_sword = { name = "Rusty Sword", damage = 5 },
-		bow = { name = "Bow", damage = 10 },
-		longsword = { name = "Longsword", damage = 15 },
+		rusty_sword = { name = "Rusty Sword", hitChance = 75, damage = 5 },
+		bow = { name = "Bow", hitChance = 80, damage = 10 },
+		longsword = { name = "Longsword", hitChance = 95, damage = 15 },
 	},
 	consumables = {
 		healing_potion = { name = "Healing Potion", heal = 15 },

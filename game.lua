@@ -6,6 +6,7 @@ local game = {
 		health = 100,
 		maxHealth = 100,
 		currentRoom = 1,
+		equippedWeapon = items.weapons.rusty_sword,
 		inventory = {
 			{ name = items.weapons.rusty_sword.name, quantity = 1 },
 			{ name = items.consumables.healing_potion.name, quantity = 1 },
