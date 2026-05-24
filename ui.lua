@@ -1,4 +1,11 @@
 local game = require("game")
+local function clear()
+	if package.config:sub(1, 1) == "\\" then
+		os.execute("cls")
+	else
+		os.execute("clear")
+	end
+end
 local function formatInventory(inventory)
 	local items = {}
 	for _, item in ipairs(inventory) do
@@ -34,8 +41,7 @@ local function displayRoomDescription()
 	print(game.rooms[game.player.currentRoom].description)
 end
 
-local function displayEnemies()
-	local enemies = game.rooms[game.player.currentRoom].enemies
+local function displayEnemies(enemies)
 	if #enemies > 0 then
 		print("Enemies:")
 		print(formatEnemies(enemies))
@@ -44,11 +50,11 @@ local function displayEnemies()
 	end
 end
 
-local function displayCombatState()
+local function displayCombatState(enemies)
 	print("Your Stats:")
 	print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
 	print("  Equipped Weapon: " .. game.player.equippedWeapon.name)
-	displayEnemies()
+	displayEnemies(enemies)
 end
 
 return {
@@ -57,4 +63,5 @@ return {
 	displayEnemies = displayEnemies,
 	formatInventory = formatInventory,
 	displayCombatState = displayCombatState,
+	clear = clear,
 }
