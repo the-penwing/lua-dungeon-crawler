@@ -5,12 +5,14 @@ local enemies = {
 		name = "Bat",
 		maxHealth = 5,
 		damage = 1,
+		hitChance = 65,
 		loot = {},
 	},
 	goblin = {
 		name = "Goblin",
 		maxHealth = 20,
 		damage = 5,
+		hitChance = 70,
 		loot = {
 			{ name = items.loot.gold_coin.name, quantity = 1 },
 		},
@@ -19,6 +21,7 @@ local enemies = {
 		name = "Skeleton",
 		maxHealth = 30,
 		damage = 7,
+		hitChance = 75,
 		loot = {
 			{ name = items.weapons.bow.name, quantity = 1 },
 			{ name = items.consumables.arrow.name, quantity = 15 },
@@ -31,6 +34,8 @@ local enemies = {
 			small = 5,
 			big = 15,
 		},
+		hitChance = 80,
+		attackPhase = 0,
 		loot = {
 			{ name = items.loot.gold_coin.name, quantity = 100 },
 			{ name = items.weapons.longsword.name, quantity = 1 },
