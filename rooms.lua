@@ -8,7 +8,9 @@ local function createEnemy(enemyTemplate)
 		health = enemyTemplate.maxHealth,
 		maxHealth = enemyTemplate.maxHealth,
 		damage = enemyTemplate.damage,
+		hitChance = enemyTemplate.hitChance,
 		loot = enemyTemplate.loot,
+		attackPhase = enemyTemplate.attackPhase or 0,
 	}
 end
 
