@@ -5,6 +5,7 @@ local game = {
 	player = {
 		health = 100,
 		maxHealth = 100,
+		mp = 20,
 		currentRoom = 1,
 		equippedWeapon = items.weapons.rusty_sword,
 		inventory = {
