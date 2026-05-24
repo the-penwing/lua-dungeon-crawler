@@ -1,0 +1,8 @@
+{
+    "diagnostics.globals": [
+        "damage"
+    ],
+    "diagnostics.disable": [
+        "unused-function"
+    ]
+}
