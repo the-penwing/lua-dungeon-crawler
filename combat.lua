@@ -110,34 +110,39 @@ end
 local function combatLoop(enemies)
 	while #enemies > 0 and game.player.health > 0 do
 		-- 1. Display state
-		ui.displayCombatState()
+		ui.displayCombatState(enemies)
 
 		-- 2. Get player action (1-3)
 		local choice = getPlayerAction()
 
 		-- 3. Execute action based on choice
 		if choice == 1 then
-			-- Display enemies
-			print("Choose target:")
-			for i, enemy in ipairs(enemies) do
-				print(i .. ") " .. enemy.name .. " (" .. enemy.health .. "/" .. enemy.maxHealth .. ")")
-			end
+			local targetValid = false
+			repeat
+				-- Clear screen
+				-- Display enemies
+				print("Choose target:")
+				for i, enemy in ipairs(enemies) do
+					print(i .. ") " .. enemy.name .. " (" .. enemy.health .. "/" .. enemy.maxHealth .. ")")
+				end
 
-			-- Get target choice
-			io.write("Target (1-" .. #enemies .. "): ")
-			local targetIndex = tonumber(io.read())
+				-- Get target choice
+				io.write("Target (1-" .. #enemies .. "): ")
+				local targetIndex = tonumber(io.read())
 
-			-- Validate and attack
-			if targetIndex and targetIndex >= 1 and targetIndex <= #enemies then
-				playerAttack(enemies[targetIndex])
-			else
-				print("Invalid target!")
-			end
-			if enemies[targetIndex].health <= 0 then
-				-- Remove the enemy
-				-- Award loot
-				table.remove(enemies, targetIndex)
-			end
+				-- Validate and attack
+				if targetIndex and targetIndex >= 1 and targetIndex <= #enemies then
+					playerAttack(enemies[targetIndex])
+					if enemies[targetIndex].health <= 0 then
+						-- Remove the enemy and award loot
+						awardLoot(enemies[targetIndex])
+						table.remove(enemies, targetIndex)
+					end
+					targetValid = true
+				else
+					print("Invalid target!")
+				end
+			until targetValid == true
 		elseif choice == 2 then
 			-- Display items
 			local inventory = game.player.inventory
@@ -173,3 +178,6 @@ local function combatLoop(enemies)
 		return true
 	end
 end
+return {
+	combatLoop = combatLoop,
+}
