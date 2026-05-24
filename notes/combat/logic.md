@@ -57,4 +57,29 @@ Combat is turn-based:
 - Right now `game.player.inventory` has all items mixed. How do you know which weapon is equipped?
   - Add `game.player.equippedWeapon` field
 
-Figure these out and sketch the combat flow, then code it.
+**First question:** For `enemyAttack(enemy)`, do you want:
+- All enemies have a **single hit chance** (like 80%)?
+- Or does each enemy type (bat, goblin, skeleton, dragon) have their own hit chance?
+
+- Bat 65%
+- Goblin 70%
+- Skeleton 75%
+- Dragon 80%
+
+Looking at your `enemies.lua`, I only see `damage` defined, no `hitChance`. So:
+
+**Do you need to:**
+1. Add a `hitChance` field to each enemy in `enemies.lua`?
+Yes
+2. Then update `enemyAttack()` to use it?
+Yes
+
+**And for the Dragon's two attacks:**
+- When Dragon attacks, does it randomly pick between "small" (5 DMG) and "big" (15 DMG)?
+- Or does it alternate? Or something else?
+
+- Small
+- Small
+- Small
+- Big
+
