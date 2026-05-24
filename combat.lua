@@ -1,4 +1,5 @@
 local game = require("game")
+local spells = require("spells")
 local items = require("items")
 local ui = require("ui")
 local function getPlayerAction()
@@ -107,6 +108,26 @@ local function awardLoot(enemy)
 	end
 end
 
+local function selectTarget(enemies)
+	while true do
+		-- Display enemies
+		print("Choose target:")
+		for i, enemy in ipairs(enemies) do
+			print(i .. ") " .. enemy.name .. " (" .. enemy.health .. "/" .. enemy.maxHealth .. ")")
+		end
+
+		-- Get target choice
+		io.write("Target (1-" .. #enemies .. "): ")
+		local targetIndex = tonumber(io.read())
+
+		-- Validate
+		if targetIndex and targetIndex >= 1 and targetIndex <= #enemies then
+			return targetIndex, enemies[targetIndex]
+		else
+			print("Invalid target!")
+		end
+	end
+end
 local function combatLoop(enemies)
 	while #enemies > 0 and game.player.health > 0 do
 		-- 1. Display state
@@ -117,33 +138,48 @@ local function combatLoop(enemies)
 
 		-- 3. Execute action based on choice
 		if choice == 1 then
-			local targetValid = false
-			repeat
-				-- Clear screen
-				-- Display enemies
-				print("Choose target:")
-				for i, enemy in ipairs(enemies) do
-					print(i .. ") " .. enemy.name .. " (" .. enemy.health .. "/" .. enemy.maxHealth .. ")")
-				end
-
-				-- Get target choice
-				io.write("Target (1-" .. #enemies .. "): ")
-				local targetIndex = tonumber(io.read())
-
-				-- Validate and attack
-				if targetIndex and targetIndex >= 1 and targetIndex <= #enemies then
-					playerAttack(enemies[targetIndex])
-					if enemies[targetIndex].health <= 0 then
-						-- Remove the enemy and award loot
-						awardLoot(enemies[targetIndex])
-						table.remove(enemies, targetIndex)
-					end
-					targetValid = true
-				else
-					print("Invalid target!")
-				end
-			until targetValid == true
+			local targetIndex, target = selectTarget(enemies)
+			playerAttack(target)
+			if target.health <= 0 then
+				awardLoot(target)
+				table.remove(enemies, targetIndex)
+			end
 		elseif choice == 2 then
+			local spellValid = false
+			repeat
+				print("\nSelect a spell: ")
+				print("\n1) " .. spells.fireball.name .. " - " .. spells.fireball.cost .. "MP")
+				print("  " .. spells.fireball.description)
+				print("\n2) " .. spells.healing_whisper.name .. " - " .. spells.healing_whisper.cost .. "MP")
+				print("  " .. spells.healing_whisper.description)
+
+				io.write("Spell (1-2): ")
+				local spellChoice = tonumber(io.read())
+
+				if spellChoice == 1 then
+					if game.player.mp >= 3 then
+						local targetIndex, target = selectTarget(enemies)
+						spells.castFireball(target)
+						if target.health <= 0 then
+							awardLoot(target)
+							table.remove(enemies, targetIndex)
+						end
+						spellValid = true
+					else
+						print("Not enough MP!")
+					end
+				elseif spellChoice == 2 then
+					if game.player.mp >= 3 then
+						spells.castHealingWhisper()
+						spellValid = true
+					else
+						print("Not enough MP!")
+					end
+				else
+					print("Invalid spell!")
+				end
+			until spellValid == true
+		elseif choice == 3 then
 			-- Display items
 			local inventory = game.player.inventory
 			print("Select an item:")
@@ -157,7 +193,7 @@ local function combatLoop(enemies)
 
 			-- Validate and use
 			useItem(itemIndex)
-		elseif choice == 3 then
+		elseif choice == 4 then
 			if attemptFlee() then
 				game.player.health = math.ceil(game.player.health * 1.5)
 				return "fled"
