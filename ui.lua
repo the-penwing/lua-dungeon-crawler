@@ -44,3 +44,10 @@ local function displayEnemies()
 		print("No enemies here.")
 	end
 end
+
+return {
+	displayGameState = displayGameState,
+	displayRoomDescription = displayRoomDescription,
+	displayEnemies = displayEnemies,
+	formatInventory = formatInventory,
+}
