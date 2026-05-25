@@ -3,14 +3,22 @@ local spells = require("spells")
 local items = require("items")
 local ui = require("ui")
 local function getPlayerAction()
-	print("\n--- Your Turn ---")
-	print("1) Attack")
-	print("2) Cast Spell")
-	print("3) Use Item")
-	print("4) Flee")
-	io.write("Enter choice (1-4): ")
-	local choice = io.read()
-	return tonumber(choice)
+	local validChoice = false
+	repeat
+		print("\n--- Your Turn ---")
+		print("1) Attack")
+		print("2) Cast Spell")
+		print("3) Use Item")
+		print("4) Flee")
+		io.write("Enter choice (1-4): ")
+		choice = tonumber(io.read())
+		if choice == 1 or choice == 2 or choice == 3 or choice == 4 then
+			validChoice = true
+		else
+			print("please choose a valid option(1-4)")
+		end
+	until validChoice == true
+	return choice
 end
 
 local function playerAttack(enemy)
@@ -234,7 +242,7 @@ local function combatLoop(enemies)
 		local actionFinished = false
 		-- 3. Execute action based on choice
 		if choice == 1 then
-			choiceAttack(enemies)
+			actionFinished = choiceAttack(enemies)
 		elseif choice == 2 then
 			actionFinished = choiceSpell(enemies)
 		elseif choice == 3 then
