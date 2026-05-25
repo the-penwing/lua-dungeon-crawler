@@ -1,4 +1,4 @@
-local items = require("items")
+local items = require("src.items")
 
 local enemies = {
 	bat = {

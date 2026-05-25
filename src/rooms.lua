@@ -1,5 +1,5 @@
-local enemies = require("enemies")
-local items = require("items")
+local enemies = require("src.enemies")
+local items = require("src.items")
 
 -- Helper function to create an enemy instance
 local function createEnemy(enemyTemplate)

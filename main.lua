@@ -1,6 +1,6 @@
-local combat = require("combat")
-local game = require("game")
-local rooms = require("rooms")
+local combat = require("src.combat")
+local game = require("src.game")
+local rooms = require("src.rooms")
 
 -- Start a test combat
 local testEnemies = rooms[2].enemies -- Room 2 has 2 bats + 1 goblin

@@ -1,5 +1,5 @@
-local rooms = require("rooms")
-local items = require("items")
+local rooms = require("src.rooms")
+local items = require("src.items")
 
 local game = {
 	player = {

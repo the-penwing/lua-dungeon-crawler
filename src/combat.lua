@@ -1,7 +1,7 @@
-local game = require("game")
-local spells = require("spells")
-local items = require("items")
-local ui = require("ui")
+local game = require("src.game")
+local spells = require("src.spells")
+local items = require("src.items")
+local ui = require("src.ui")
 local function getPlayerAction()
 	local validChoice = false
 	repeat

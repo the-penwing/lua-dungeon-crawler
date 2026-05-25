@@ -1,4 +1,4 @@
-local game = require("game")
+local game = require("src.game")
 
 local spells = {
 	fireball = {
