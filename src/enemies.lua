@@ -1,5 +1,3 @@
-local items = require("src.items")
-
 local enemies = {
 	bat = {
 		name = "Bat",
@@ -14,7 +12,7 @@ local enemies = {
 		damage = 5,
 		hitChance = 70,
 		loot = {
-			{ name = "goldcoin", quantity = 1 },
+			{ id = "goldcoin", quantity = 1 },
 		},
 	},
 	skeleton = {
@@ -23,7 +21,7 @@ local enemies = {
 		damage = 7,
 		hitChance = 75,
 		loot = {
-			{ name = "arrow", quantity = 5 },
+			{ id = "arrow", quantity = 5 },
 		},
 	},
 	dragon = {
@@ -36,8 +34,8 @@ local enemies = {
 		hitChance = 80,
 		attackPhase = 0,
 		loot = {
-			{ name = "goldcoin", quantity = 100 },
-			{ name = "longsword", quantity = 1 },
+			{ id = "goldcoin", quantity = 100 },
+			{ id = "longsword", quantity = 1 },
 		},
 	},
 }
