@@ -5,7 +5,7 @@ local items = {
 		longsword = { name = "Longsword", id = "longsword", hitChance = 95, damage = 15 },
 	},
 	consumables = {
-		healing_potion = { name = "Healing Potion", id = "healingpotion", heal = 15 },
+		healing_potion = { name = "Healing Potion", id = "healingpotion", heal = 15, type = "consumable" },
 		arrow = { name = "Arrow", id = "arrow" },
 	},
 	loot = {

@@ -228,32 +228,47 @@ local function choiceSpell(enemies)
 end
 
 local function choiceItem()
-	-- Display items
 	local inventory = game.player.inventory
 	if #inventory == 0 then
 		print("you have no items!")
 		print("returning to action menu.")
 		return false
 	end
-	print("Select an item:")
+
+	-- Build consumable-only list
+	local consumables = {}
 	for i, item in ipairs(inventory) do
 		local itemData = items.getItemById(item.id)
-		if itemData then
-			print(i .. ") " .. itemData.name .. " (x" .. item.quantity .. ")")
+		if itemData and itemData.type == "consumable" then
+			table.insert(consumables, { index = i, data = item, info = itemData })
 		end
 	end
-	print((#inventory + 1) .. ") return to action menu")
 
-	-- Get item choice
-	io.write("Item (1-" .. #inventory + 1 .. "): ")
-	local itemIndex = tonumber(io.read())
-	if itemIndex == #inventory + 1 then
+	if #consumables == 0 then
+		print("you have no consumable items!")
 		print("returning to action menu.")
 		return false
 	end
-	-- Validate and use
-	useItem(itemIndex)
-	return true
+
+	print("Select an item:")
+	for i, consumable in ipairs(consumables) do
+		print(i .. ") " .. consumable.info.name .. " (x" .. consumable.data.quantity .. ")")
+	end
+	print((#consumables + 1) .. ") return to action menu")
+
+	-- Get item choice
+	io.write("Item (1-" .. (#consumables + 1) .. "): ")
+	local choice = tonumber(io.read())
+	if choice == #consumables + 1 then
+		print("returning to action menu.")
+		return false
+	elseif choice and choice >= 1 and choice <= #consumables then
+		useItem(consumables[choice].index)
+		return true
+	else
+		print("invalid choice!")
+		return false
+	end
 end
 local function combatLoop(enemies)
 	while #enemies > 0 and game.player.health > 0 do
