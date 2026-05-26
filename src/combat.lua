@@ -194,6 +194,10 @@ local function choiceSpell(enemies)
 			if spellChoice == 1 then
 				if game.player.mp >= 3 then
 					local targetIndex, target = selectTarget(enemies)
+					if not target or not targetIndex then
+						print("error: invalid target!!")
+						return false
+					end
 					spells.castFireball(target)
 					game.player.spellCooldown = true
 					if target.health <= 0 then
