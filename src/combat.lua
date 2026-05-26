@@ -40,26 +40,37 @@ local function playerAttack(enemy)
 end
 
 local function useItem(itemIndex)
-	-- Get the item from inventory
-	local usedItem = game.player.inventory[itemIndex]
+	-- Get the inventory slot
+	local inventorySlot = game.player.inventory[itemIndex]
+
+	if not inventorySlot then
+		print("you don't have that item!")
+		return
+	end
+
+	-- Get the full item data
+	local usedItem = items.getItemById(inventorySlot.id)
+
+	if not usedItem then
+		print("error: item not found!")
+		return
+	end
 
 	-- Check if it exists and has quantity
-	if usedItem and usedItem.quantity > 0 then
-		-- Apply effect based on item name
-		if usedItem.name == items.consumables.healing_potion.name then
-			game.player.health = math.min(game.player.health + 15, game.player.maxHealth)
-			print(
-				"Used " .. items.consumables.healing_potion.name .. ". Health restored to " .. game.player.health .. "!"
-			)
+	if inventorySlot.quantity > 0 then
+		-- Apply effect based on item ID
+		if usedItem.id == "healingpotion" then
+			game.player.health = math.min(game.player.health + usedItem.heal, game.player.maxHealth)
+			print("used " .. usedItem.name .. ". health restored to " .. game.player.health .. "!")
 		end
 
 		-- Decrement and remove if empty
-		usedItem.quantity = usedItem.quantity - 1
-		if usedItem.quantity == 0 then
+		inventorySlot.quantity = inventorySlot.quantity - 1
+		if inventorySlot.quantity == 0 then
 			table.remove(game.player.inventory, itemIndex)
 		end
 	else
-		print("You don't have that item!")
+		print("you don't have that item!")
 	end
 end
 
