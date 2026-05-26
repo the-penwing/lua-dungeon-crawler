@@ -1,5 +1,4 @@
 local enemies = require("src.enemies")
-local items = require("src.items")
 
 -- Helper function to create an enemy instance
 local function createEnemy(enemyTemplate)
@@ -19,8 +18,10 @@ local rooms = {
 		description = "A dark smelly stone hall.",
 		enemies = {},
 		loot = {
-			{ name = items.weapons.rusty_sword.name, quantity = 1 },
-			{ name = items.consumables.healing_potion.name, quantity = 1 },
+			{ name = "rustysword", quantity = 1 },
+			{ name = "bow", quantity = 1 },
+			{ name = "arrow", quantity = 5 },
+			{ name = "healingpotion", quantity = 1 },
 		},
 		exits = { north = 2 },
 	},
@@ -41,8 +42,8 @@ local rooms = {
 			createEnemy(enemies.skeleton),
 		},
 		loot = {
-			{ name = items.consumables.healing_potion.name, quantity = 2 },
-			{ name = items.loot.gold_coin.name, quantity = 5 },
+			{ name = "healingpotion", quantity = 2 },
+			{ name = "goldcoin", quantity = 5 },
 		},
 		exits = { east = 4 },
 	},
@@ -52,8 +53,8 @@ local rooms = {
 			createEnemy(enemies.dragon),
 		},
 		loot = {
-			{ name = items.consumables.healing_potion.name, quantity = 1 },
-			{ name = items.consumables.arrow.name, quantity = 15 },
+			{ name = "healingpotion", quantity = 1 },
+			{ name = "arrow", quantity = 15 },
 		},
 		exits = nil,
 	},
