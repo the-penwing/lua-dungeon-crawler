@@ -75,7 +75,7 @@ local function useItem(itemIndex)
 end
 
 local function attemptFlee()
-	if math.random(1, 100) <= 25 then
+	if math.random(1, 100) >= 25 then
 		print("You fled successfully")
 		return true
 	else
