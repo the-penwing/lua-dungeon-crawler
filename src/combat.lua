@@ -233,7 +233,10 @@ local function choiceItem()
 	end
 	print("Select an item:")
 	for i, item in ipairs(inventory) do
-		print(i .. ") " .. item.name .. " (x" .. item.quantity .. ")")
+		local itemData = items.getItemById(item.id)
+		if itemData then
+			print(i .. ") " .. itemData.name .. " (x" .. item.quantity .. ")")
+		end
 	end
 	print((#inventory + 1) .. ") return to action menu")
 
