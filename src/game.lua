@@ -1,5 +1,4 @@
 local rooms = require("src.rooms")
-local items = require("src.items")
 
 local game = {
 	player = {
@@ -9,10 +8,10 @@ local game = {
 		maxMP = 20,
 		spellCooldown = false,
 		currentRoom = 1,
-		equippedWeapon = items.weapons.rusty_sword,
+		equippedWeapon = "rustysword",
 		inventory = {
-			{ name = items.weapons.rusty_sword.name, quantity = 1 },
-			{ name = items.consumables.healing_potion.name, quantity = 1 },
+			{ id = "rustysword", quantity = 1 },
+			{ id = "healingpotion", quantity = 1 },
 		},
 	},
 	rooms = rooms,

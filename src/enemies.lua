@@ -14,7 +14,7 @@ local enemies = {
 		damage = 5,
 		hitChance = 70,
 		loot = {
-			{ name = items.loot.gold_coin.name, quantity = 1 },
+			{ name = "goldcoin", quantity = 1 },
 		},
 	},
 	skeleton = {
@@ -23,8 +23,7 @@ local enemies = {
 		damage = 7,
 		hitChance = 75,
 		loot = {
-			{ name = items.weapons.bow.name, quantity = 1 },
-			{ name = items.consumables.arrow.name, quantity = 15 },
+			{ name = "arrow", quantity = 5 },
 		},
 	},
 	dragon = {
@@ -37,8 +36,8 @@ local enemies = {
 		hitChance = 80,
 		attackPhase = 0,
 		loot = {
-			{ name = items.loot.gold_coin.name, quantity = 100 },
-			{ name = items.weapons.longsword.name, quantity = 1 },
+			{ name = "goldcoin", quantity = 100 },
+			{ name = "longsword", quantity = 1 },
 		},
 	},
 }

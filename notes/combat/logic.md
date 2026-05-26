@@ -38,7 +38,7 @@ Combat is turn-based:
 - Healing Whisper (Self) 100%
 
 **On flee:**
-- 75% fail rate means 25% success rate
+- 25% fail rate means 75% success rate
 - When flee fails, does enemy still get a turn? Or does player take damage and stay in combat?
   - Enemy Still Gets A Turn
 - When flee succeeds, does player get teleported to previous room or just escape the combat loop?

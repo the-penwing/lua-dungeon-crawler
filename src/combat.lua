@@ -22,7 +22,12 @@ local function getPlayerAction()
 end
 
 local function playerAttack(enemy)
-	local weapon = game.player.equippedWeapon
+	local weapon = items.getItemById(game.player.equippedWeapon)
+	if not weapon then
+		print("error: equipped weapon not found!!")
+		return
+	end
+
 	local damage = weapon.damage
 	local hitChance = weapon.hitChance
 
@@ -35,31 +40,42 @@ local function playerAttack(enemy)
 end
 
 local function useItem(itemIndex)
-	-- Get the item from inventory
-	local usedItem = game.player.inventory[itemIndex]
+	-- Get the inventory slot
+	local inventorySlot = game.player.inventory[itemIndex]
+
+	if not inventorySlot then
+		print("you don't have that item!")
+		return
+	end
+
+	-- Get the full item data
+	local usedItem = items.getItemById(inventorySlot.id)
+
+	if not usedItem then
+		print("error: item not found!")
+		return
+	end
 
 	-- Check if it exists and has quantity
-	if usedItem and usedItem.quantity > 0 then
-		-- Apply effect based on item name
-		if usedItem.name == items.consumables.healing_potion.name then
-			game.player.health = math.min(game.player.health + 15, game.player.maxHealth)
-			print(
-				"Used " .. items.consumables.healing_potion.name .. ". Health restored to " .. game.player.health .. "!"
-			)
+	if inventorySlot.quantity > 0 then
+		-- Apply effect based on item ID
+		if usedItem.id == "healingpotion" then
+			game.player.health = math.min(game.player.health + usedItem.heal, game.player.maxHealth)
+			print("used " .. usedItem.name .. ". health restored to " .. game.player.health .. "!")
 		end
 
 		-- Decrement and remove if empty
-		usedItem.quantity = usedItem.quantity - 1
-		if usedItem.quantity == 0 then
+		inventorySlot.quantity = inventorySlot.quantity - 1
+		if inventorySlot.quantity == 0 then
 			table.remove(game.player.inventory, itemIndex)
 		end
 	else
-		print("You don't have that item!")
+		print("you don't have that item!")
 	end
 end
 
 local function attemptFlee()
-	if math.random(1, 100) <= 25 then
+	if math.random(1, 100) >= 25 then
 		print("You fled successfully")
 		return true
 	else
@@ -178,6 +194,10 @@ local function choiceSpell(enemies)
 			if spellChoice == 1 then
 				if game.player.mp >= 3 then
 					local targetIndex, target = selectTarget(enemies)
+					if not target or not targetIndex then
+						print("error: invalid target!!")
+						return false
+					end
 					spells.castFireball(target)
 					game.player.spellCooldown = true
 					if target.health <= 0 then
@@ -217,7 +237,10 @@ local function choiceItem()
 	end
 	print("Select an item:")
 	for i, item in ipairs(inventory) do
-		print(i .. ") " .. item.name .. " (x" .. item.quantity .. ")")
+		local itemData = items.getItemById(item.id)
+		if itemData then
+			print(i .. ") " .. itemData.name .. " (x" .. item.quantity .. ")")
+		end
 	end
 	print((#inventory + 1) .. ") return to action menu")
 
