@@ -1,4 +1,5 @@
 local game = require("src.game")
+local items = require("src.items")
 local function clear()
 	if package.config:sub(1, 1) == "\\" then
 		os.execute("cls")
@@ -7,11 +8,14 @@ local function clear()
 	end
 end
 local function formatInventory(inventory)
-	local items = {}
+	local inventoryItems = {}
 	for _, item in ipairs(inventory) do
-		table.insert(items, item.name .. " (x" .. item.quantity .. ")")
+		local itemData = items.getItemById(item.id)
+		if itemData then
+			table.insert(inventoryItems, itemData.name .. " (x" .. item.quantity .. ")")
+		end
 	end
-	return table.concat(items, ", ")
+	return table.concat(inventoryItems, ", ")
 end
 local function formatEnemies(enemies)
 	local opponents = {}
@@ -25,7 +29,7 @@ local function displayGameState()
 	if game.player.health > 0 then
 		print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
 		print("  MP: " .. game.player.mp .. "/" .. game.player.maxMP)
-		print("  Equipped Weapon: " .. game.player.equippedWeapon.name)
+		print("  Equipped Weapon: " .. items.getItemById(game.player.equippedWeapon))
 		print("  Inventory: " .. formatInventory(game.player.inventory))
 		print("  Current Room: " .. game.player.currentRoom)
 	else
@@ -56,7 +60,7 @@ local function displayCombatState(enemies)
 	print("Your Stats:")
 	print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
 	print("  MP: " .. game.player.mp .. "/" .. game.player.maxMP)
-	print("  Equipped Weapon: " .. game.player.equippedWeapon.name)
+	print("  Equipped Weapon: " .. items.getItemById(game.player.equippedWeapon))
 	displayEnemies(enemies)
 end
 
