@@ -1,3 +1,4 @@
+#logic 
 AFTER COMBAT (if player wins):
   1. Show defeated enemies
   2. Show loot dropped

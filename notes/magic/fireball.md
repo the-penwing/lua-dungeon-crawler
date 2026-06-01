@@ -1,4 +1,4 @@
-#magic #spell #fireball
+#magic #spells 
 # Fireball
 
 ## Details

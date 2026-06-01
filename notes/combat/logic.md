@@ -1,3 +1,4 @@
+#logic
 # Combat Logic
 Combat is turn-based:
 1. Player chooses an action (Attack, Cast Spell, Use Item, Flee)

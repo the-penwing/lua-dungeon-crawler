@@ -1,4 +1,4 @@
-#magic #spells
+#magic #spells #logic 
 # Spells
 
 ## Core Logic
