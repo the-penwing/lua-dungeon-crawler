@@ -2,14 +2,59 @@ local combat = require("src.combat")
 local game = require("src.game")
 local rooms = require("src.rooms")
 local items = require("src.items")
+local ui = require("src.ui")
 
--- Start a test combat
-local testEnemies = rooms[2].enemies -- Room 2 has 2 bats + 1 goblin
-local result = combat.loop.combatLoop(testEnemies)
+local function mainMenu()
+	ui.clear()
+	local validChoice = false
+	repeat
+		print("--- lua dungeon crawler ---")
+		print("\n  1) new game")
+		print("  2) load game")
+		print("  3) exit")
+		io.write("choice (1-3): ")
+		choice = tonumber(io.read())
+		if choice == 1 or choice == 2 or choice == 3 then
+			validChoice = true
+		else
+			print("please choose a valid option(1-3)")
+		end
+	until validChoice == true
+	return choice
+end
+local function gameMenu()
+	return
+end
 
-print("Combat result:", result)
-print("Player health:", game.player.health)
-print("\nFinal Inventory:")
-for _, item in ipairs(game.player.inventory) do
-	print("  " .. items.getItemById(item.id).name .. " (x" .. item.quantity .. ")")
+local function mainLoop()
+	local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
+
+	if choice == 3 then
+		return
+	end -- Exit game
+
+	if choice == 2 then
+		game = require("src.save").loadGame("save.json") or require("src.game")
+		-- If load fails, fall back to fresh game
+	end
+	-- Either new game or load game (game state already set)
+	repeat
+		-- gameMenu() displays options and returns choice
+		-- gameMenu() handles: use item, change weapon, move rooms, rest, save, quit to main menu
+		local menuChoice = gameMenu()
+
+		if menuChoice == "quit" then
+			-- Return to main menu
+			break
+		elseif menuChoice == "enter_room" then
+			-- Check if room has enemies
+			if #rooms[game.player.currentRoom].enemies > 0 then
+				local result = combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
+				-- Show post-combat flow (loot, rest, use items, save)
+			else
+				-- Show room, no enemies
+			end
+		end
+	-- Handle other choices (use item, change weapon, rest, move room)
+	until false -- Loop until player quits to main menu
 end
