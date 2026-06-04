@@ -49,6 +49,24 @@ local function gameMenu()
 	return choice
 end
 
+local function nextRoom()
+	if rooms[game.player.currentRoom + 1] then
+		game.player.currentRoom = game.player.currentRoom + 1
+		local currentRoom = game.player.currentRoom
+		print("You move to the next room...")
+		ui.displayRoomDescription()
+		if #rooms[currentRoom].enemies > 0 then
+			combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
+			return true
+		else
+			print("No enemies here")
+			return true
+		end
+	else
+		print("You cant go any further!")
+		return false
+	end
+end
 local function mainLoop()
 	local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
