@@ -31,7 +31,6 @@ local function displayGameState()
 		print("  MP: " .. game.player.mp .. "/" .. game.player.maxMP)
 		print("  Equipped Weapon: " .. items.getItemById(game.player.equippedWeapon).name)
 		print("  Inventory: " .. formatInventory(game.player.inventory))
-		print("  Current Room: " .. game.player.currentRoom)
 	else
 		print("You have died")
 	end
@@ -57,7 +56,7 @@ local function displayEnemies(enemies)
 end
 
 local function displayCombatState(enemies)
-	print("Your Stats:")
+	print("Player Stats:")
 	print("  Health: " .. game.player.health .. "/" .. game.player.maxHealth)
 	print("  MP: " .. game.player.mp .. "/" .. game.player.maxMP)
 	print("  Equipped Weapon: " .. items.getItemById(game.player.equippedWeapon).name)

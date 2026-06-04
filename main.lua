@@ -23,7 +23,30 @@ local function mainMenu()
 	return choice
 end
 local function gameMenu()
-	return
+	local currentRoom = game.player.currentRoom
+	local roomDescription = rooms[currentRoom].description
+	print("--- Room " .. currentRoom .. ": " .. roomDescription .. " ---")
+	print()
+	ui.displayGameState()
+	print("\nGame Menu:")
+	print("  1) Use Item")
+	print("  2) Switch Weapon")
+	print("  3) Next Room")
+	print("  4) Prev. Room")
+	print("  5) Rest")
+	print("  6) Save and Main Menu")
+	local validChoice = false
+	repeat
+		io.write("Enter choice (1-6): ")
+		choice = tonumber(io.read())
+		if choice > 1 and choice <= 6 then
+			validChoice = true
+		else
+			print("Invaild choice!")
+			print("Enter 1-6")
+		end
+	until validChoice == true
+	return choice
 end
 
 local function mainLoop()
@@ -40,7 +63,7 @@ local function mainLoop()
 	-- Either new game or load game (game state already set)
 	repeat
 		-- gameMenu() displays options and returns choice
-		-- gameMenu() handles: use item, change weapon, move rooms, rest, save, quit to main menu
+		-- gameMenu() handles: use item, change weapon, move rooms, rest, save & quit to main menu
 		local menuChoice = gameMenu()
 
 		if menuChoice == "quit" then
