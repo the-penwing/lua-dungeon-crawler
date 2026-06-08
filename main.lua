@@ -85,6 +85,24 @@ local function prevRoom()
 		return false
 	end
 end
+
+local function switchWeapon()
+	local weaponsInInventory = {}
+
+	for i, inventoryItem in ipairs(game.player.inventory) do
+		local itemData = items.getItemById(inventoryItem.id)
+		-- check if the item is a weapon
+		if itemData and items.items.weapons[itemData.id] then
+			table.insert(weaponsInInventory, {
+				index = i,
+				id = inventoryItem.id,
+				data = itemData,
+			})
+		end
+	end
+	print(ui.formatInventory(game.player.inventory))
+end
+
 local function mainLoop()
 	local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
