@@ -1,5 +1,4 @@
 local game = require('src.game')
-
 local function enemyAttack(enemy)
   if math.random(1, 100) <= enemy.hitChance then
     local damage
@@ -31,21 +30,27 @@ local function enemyAttack(enemy)
 end
 
 local function awardLoot(enemy)
-  for _, lootItem in ipairs(enemy.loot) do
-    -- Check if item already in inventory
-    local found = false
-    for _, invItem in ipairs(game.player.inventory) do
-      if invItem.id == lootItem.id then -- Change .name to .id
-        -- Item exists, add quantity
-        invItem.quantity = invItem.quantity + lootItem.quantity
-        found = true
-        break
+  if #enemy.loot > 0 then
+    print('\n' .. enemy.name .. ' dropped:')
+    for _, lootItem in ipairs(enemy.loot) do
+      local itemData = require('src.items').getItemById(lootItem.id)
+      ---@diagnostic disable-next-line: need-check-nil
+      print('  - ' .. itemData.name .. ' (x' .. lootItem.quantity .. ')')
+      -- Check if item already in inventory
+      local found = false
+      for _, invItem in ipairs(game.player.inventory) do
+        if invItem.id == lootItem.id then -- Change .name to .id
+          -- Item exists, add quantity
+          invItem.quantity = invItem.quantity + lootItem.quantity
+          found = true
+          break
+        end
       end
-    end
 
-    -- If not found, add new item
-    if not found then
-      table.insert(game.player.inventory, { id = lootItem.id, quantity = lootItem.quantity }) -- Change .name to .id
+      -- If not found, add new item
+      if not found then
+        table.insert(game.player.inventory, { id = lootItem.id, quantity = lootItem.quantity }) -- Change .name to .id
+      end
     end
   end
 end
