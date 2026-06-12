@@ -8,7 +8,7 @@ local ui = require('src.ui')
 local function regenMP() game.player.mp = math.min(game.player.mp + 2, game.player.maxMP) end
 
 local function combatLoop(enemies)
-  while #enemies > 0 and game.player.health > 0 do
+  while #enemies > 0 and game.player.hp > 0 do
     -- 1. Display state and clear spell spell cooldown
     ui.displayCombatState(enemies)
 
@@ -24,7 +24,7 @@ local function combatLoop(enemies)
       actionFinished = utilise.choiceItem()
     elseif choice == 4 then
       if actions.attemptFlee() then
-        game.player.health = math.ceil(game.player.health * 1.5)
+        game.player.hp = math.ceil(game.player.hp * 1.5)
         return 'fled'
       end
       -- If flee fails, just continue to enemy turn
@@ -45,7 +45,7 @@ local function combatLoop(enemies)
   end
 
   -- After loop: check result
-  if game.player.health <= 0 then
+  if game.player.hp <= 0 then
     return false
   else
     return true

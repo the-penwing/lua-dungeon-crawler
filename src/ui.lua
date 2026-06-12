@@ -26,8 +26,8 @@ local function formatEnemies(enemies)
 end
 local function displayGameState()
   print('Player Stats:')
-  if game.player.health > 0 then
-    print('  Health: ' .. game.player.health .. '/' .. game.player.maxHealth)
+  if game.player.hp > 0 then
+    print('  Health: ' .. game.player.hp .. '/' .. game.player.maxHP)
     print('  MP: ' .. game.player.mp .. '/' .. game.player.maxMP)
     print('  Equipped Weapon: ' .. items.getItemById(game.player.equippedWeapon).name)
     print('  Inventory: ' .. formatInventory(game.player.inventory))
@@ -55,7 +55,7 @@ end
 
 local function displayCombatState(enemies)
   print('Player Stats:')
-  print('  Health: ' .. game.player.health .. '/' .. game.player.maxHealth)
+  print('  Health: ' .. game.player.hp .. '/' .. game.player.maxHP)
   print('  MP: ' .. game.player.mp .. '/' .. game.player.maxMP)
   print('  Equipped Weapon: ' .. items.getItemById(game.player.equippedWeapon).name)
   displayEnemies(enemies)

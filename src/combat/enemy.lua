@@ -13,7 +13,7 @@ local function enemyAttack(enemy)
       damage = enemy.damage
     end
 
-    game.player.health = game.player.health - damage
+    game.player.hp = game.player.hp - damage
     print('ouch, ' .. enemy.name .. ' did ' .. damage .. ' to you')
   else
     print(enemy.name .. "'s attack missed!")
@@ -24,7 +24,7 @@ local function enemyAttack(enemy)
     enemy.attackPhase = (enemy.attackPhase + 1) % 4 -- Cycles 0,1,2,3,0,1,2,3...
   end
 
-  if game.player.health <= 0 then
+  if game.player.hp <= 0 then
     game.playerAlive = false
     print('oh snap, that blow killed you.')
   end

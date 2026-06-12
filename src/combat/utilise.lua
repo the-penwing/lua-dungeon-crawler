@@ -22,8 +22,8 @@ local function useItem(itemIndex)
   if inventorySlot.quantity > 0 then
     -- Apply effect based on item ID
     if usedItem.id == 'healingpotion' then
-      game.player.health = math.min(game.player.health + usedItem.heal, game.player.maxHealth)
-      print('used ' .. usedItem.name .. '. health restored to ' .. game.player.health .. '!')
+      game.player.hp = math.min(game.player.hp + usedItem.heal, game.player.maxHP)
+      print('used ' .. usedItem.name .. '. health restored to ' .. game.player.hp .. '!')
     end
 
     -- Decrement and remove if empty

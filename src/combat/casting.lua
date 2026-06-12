@@ -14,8 +14,8 @@ local function castFireball(target)
   print('fireball was a success!!')
   if math.random(1, 100) <= 5 then
     print('but you got burned!!')
-    local selfDamage = math.floor(game.player.health * 0.05)
-    game.player.health = game.player.health - selfDamage
+    local selfDamage = math.floor(game.player.hp * 0.05)
+    game.player.hp = game.player.hp - selfDamage
     print('you took ' .. selfDamage .. ' damage from the backfire!')
   end
   return true
@@ -28,9 +28,9 @@ local function castHealingWhisper()
   end
   game.player.mp = game.player.mp - 3
 
-  local oldHealth = game.player.health
-  game.player.health = math.min(game.player.health + 20, game.player.maxHealth)
-  local healedAmount = game.player.health - oldHealth
+  local oldHealth = game.player.hp
+  game.player.hp = math.min(game.player.hp + 20, game.player.maxHP)
+  local healedAmount = game.player.hp - oldHealth
 
   print('you healed ' .. healedAmount .. ' HP')
   print('healing whisper was a success!!')

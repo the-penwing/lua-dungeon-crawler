@@ -2,8 +2,8 @@ local rooms = require('src.rooms')
 
 local game = {
   player = {
-    health = 100,
-    maxHealth = 100,
+    hp = 100,
+    maxHP = 100,
     mp = 20,
     maxMP = 20,
     spellCooldown = false,
