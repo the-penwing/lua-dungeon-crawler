@@ -5,7 +5,9 @@ local utilise = require('src.combat.utilise')
 local enemy_module = require('src.combat.enemy')
 local ui = require('src.ui')
 
-local function regenMP() game.player.mp = math.min(game.player.mp + 2, game.player.maxMP) end
+local function regenMP()
+  game.player.mp = math.min(game.player.mp + 2, game.player.maxMP)
+end
 
 local function combatLoop(enemies)
   while #enemies > 0 and game.player.hp > 0 do

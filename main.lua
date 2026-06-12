@@ -61,11 +61,11 @@ local function nextRoom()
       combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
       return true
     else
-      print('No enemies here')
+      print('no enemies here.')
       return true
     end
   else
-    print('You cant go this way!')
+    print("you can't go this way!")
     return false
   end
 end
@@ -80,11 +80,11 @@ local function prevRoom()
       combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
       return true
     else
-      print('No enemies here')
+      print('no enemies here.')
       return true
     end
   else
-    print('You cant go this way!')
+    print("you can't go this way!")
     return false
   end
 end

@@ -49,7 +49,9 @@ local function escape_char(c)
   return '\\' .. (escape_char_map[c] or string.format('u%04x', c:byte()))
 end
 
-local function encode_nil(val) return 'null' end
+local function encode_nil(val)
+  return 'null'
+end
 
 local function encode_table(val, stack)
   local res = {}
@@ -93,7 +95,9 @@ local function encode_table(val, stack)
   end
 end
 
-local function encode_string(val) return '"' .. val:gsub('[%z\1-\31\\"]', escape_char) .. '"' end
+local function encode_string(val)
+  return '"' .. val:gsub('[%z\1-\31\\"]', escape_char) .. '"'
+end
 
 local function encode_number(val)
   -- Check for NaN, -inf and inf
@@ -120,7 +124,9 @@ encode = function(val, stack)
   error("unexpected type '" .. t .. "'")
 end
 
-function json.encode(val) return (encode(val)) end
+function json.encode(val)
+  return (encode(val))
+end
 
 -------------------------------------------------------------------------------
 -- Decode

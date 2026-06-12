@@ -42,7 +42,9 @@ local function displayGameState()
   end
 end
 
-local function displayRoomDescription() print(game.rooms[game.player.currentRoom].description) end
+local function displayRoomDescription()
+  print(game.rooms[game.player.currentRoom].description)
+end
 
 local function displayEnemies(enemies)
   if #enemies > 0 then
