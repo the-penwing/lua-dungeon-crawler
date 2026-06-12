@@ -149,6 +149,15 @@ local function switchWeapon()
   end
 end
 
+local function rest()
+  -- heal 10% current hp
+  game.player.hp = math.min(math.floor(game.player.hp * (1 + 10 / 100)), game.player.maxHP)
+  -- regen 5% of current mp
+  game.player.mp = math.min(math.floor(game.player.mp * (1 + 5 / 100)), game.player.maxMP)
+  -- display the results
+  print('resting restored your HP to: ' .. game.player.hp .. ', and your MP to: ' .. game.player.mp)
+end
+
 local function mainLoop()
   while true do
     local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
@@ -183,7 +192,7 @@ local function mainLoop()
         prevRoom()
       elseif gameMenuChoice == 5 then
         -- rest
-        return
+        rest()
       elseif gameMenuChoice == 6 then
         -- save and main menu
         require('src.save').saveGame('save.json')
