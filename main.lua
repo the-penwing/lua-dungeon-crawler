@@ -41,7 +41,7 @@ local function gameMenu()
   repeat
     io.write('Enter choice (1-6): ')
     choice = tonumber(io.read('*l'))
-    if choice > 1 and choice <= 6 then
+    if choice >= 1 and choice <= 6 then
       validChoice = true
     else
       print('Invaild choice!')
