@@ -150,43 +150,48 @@ local function switchWeapon()
 end
 
 local function mainLoop()
-  local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
+  while true do
+    local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
-  if choice == 2 then
-    game = require('src.save').loadGame('save.json') or require('src.game')
-    -- If load fails, fall back to fresh game
-  end
-
-  if choice == 3 then
-    os.exit(0)
-  end -- Exit game
-
-  -- Either new game or load game (game state already set)
-  repeat
-    -- gameMenu() displays options and returns choice
-    -- gameMenu() handles: use item, change weapon, move rooms, rest, save & quit to main menu
-    local gameMenuChoice = gameMenu()
-    if gameMenuChoice == 1 then
-      -- use item
-      combat.utilise.choiceItem()
-    elseif gameMenuChoice == 2 then
-      -- switch weapon
-      switchWeapon()
-    elseif gameMenuChoice == 3 then
-      -- next room
-      nextRoom()
-    elseif gameMenuChoice == 4 then
-      -- previous room
-      prevRoom()
-    elseif gameMenuChoice == 5 then
-      -- rest
-      return
-    elseif gameMenuChoice == 6 then
-      -- save and main menu
-      return
+    if choice == 2 then
+      local playerState = require('src.save').loadGame('save.json')
+      if playerState then
+        game.player = playerState
+      end
     end
-  -- Handle other choices (use item, change weapon, rest, move room)
-  until false -- Loop until player quits to main menu
+
+    if choice == 3 then
+      os.exit(0)
+    end -- Exit game
+
+    -- Either new game or load game (game state already set)
+    repeat
+      -- gameMenu() displays options and returns choice
+      -- gameMenu() handles: use item, change weapon, move rooms, rest, save & quit to main menu
+      local gameMenuChoice = gameMenu()
+      if gameMenuChoice == 1 then
+        -- use item
+        combat.utilise.choiceItem()
+      elseif gameMenuChoice == 2 then
+        -- switch weapon
+        switchWeapon()
+      elseif gameMenuChoice == 3 then
+        -- next room
+        nextRoom()
+      elseif gameMenuChoice == 4 then
+        -- previous room
+        prevRoom()
+      elseif gameMenuChoice == 5 then
+        -- rest
+        return
+      elseif gameMenuChoice == 6 then
+        -- save and main menu
+        require('src.save').saveGame('save.json')
+        break
+      end
+    -- Handle other choices (use item, change weapon, rest, move room)
+    until false -- Loop until player quits to main menu
+  end
 end
 
 mainLoop()
