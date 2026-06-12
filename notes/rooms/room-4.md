@@ -1,4 +1,4 @@
-#room #boss #boss-fight
+#room #boss
 
 # Room 4
 

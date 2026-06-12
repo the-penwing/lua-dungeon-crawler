@@ -1,4 +1,4 @@
-#magic #spell #healing-whisper
+#magic #spells 
 # Healing Whisper
 
 ## Details
