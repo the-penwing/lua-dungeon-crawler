@@ -168,7 +168,7 @@ local function mainLoop()
     local gameMenuChoice = gameMenu()
     if gameMenuChoice == 1 then
       -- use item
-      combat.utilise.useItem(combat.utilise.choiceItem())
+      combat.utilise.choiceItem()
     elseif gameMenuChoice == 2 then
       -- switch weapon
       switchWeapon()
