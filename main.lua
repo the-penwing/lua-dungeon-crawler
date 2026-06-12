@@ -103,7 +103,7 @@ local function switchWeapon()
   for i, inventoryItem in ipairs(inventory) do
     local itemData = items.getItemById(inventoryItem.id)
     -- check if the item is a weapon
-    if itemData and items.items.weapons[itemData.id] then
+    if itemData and itemData.type == 'weapon' then
       table.insert(weaponsInInventory, {
         index = i,
         id = inventoryItem.id,
