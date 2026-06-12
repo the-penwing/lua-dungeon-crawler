@@ -9,7 +9,7 @@ local function selectTarget(enemies)
 
     -- Get target choice
     io.write('Target (1-' .. #enemies + 1 .. '): ')
-    local targetIndex = tonumber(io.read())
+    local targetIndex = tonumber(io.read('*l'))
 
     -- Validate
     if targetIndex == #enemies + 1 then

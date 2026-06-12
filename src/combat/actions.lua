@@ -5,6 +5,7 @@ local enemy_module = require('src.combat.enemy')
 
 local function getPlayerAction()
   local validChoice = false
+  local choice
   repeat
     print('\n--- Your Turn ---')
     print('1) Attack')
@@ -12,7 +13,7 @@ local function getPlayerAction()
     print('3) Use Item')
     print('4) Flee')
     io.write('Enter choice (1-4): ')
-    choice = tonumber(io.read())
+    choice = tonumber(io.read('*l'))
     if choice == 1 or choice == 2 or choice == 3 or choice == 4 then
       validChoice = true
     else

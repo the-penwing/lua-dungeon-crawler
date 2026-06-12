@@ -51,7 +51,7 @@ local function choiceSpell(enemies)
       print('\n3) return to action menu')
 
       io.write('spell (1-3): ')
-      local spellChoice = tonumber(io.read())
+      local spellChoice = tonumber(io.read('*l'))
 
       if spellChoice == 1 then
         if game.player.mp >= 3 then

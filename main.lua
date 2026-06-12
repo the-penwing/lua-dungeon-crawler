@@ -7,13 +7,14 @@ local ui = require('src.ui')
 local function mainMenu()
   ui.clear()
   local validChoice = false
+  local choice
   repeat
     print('--- lua dungeon crawler ---')
     print('\n  1) new game')
     print('  2) load game')
     print('  3) exit')
     io.write('choice (1-3): ')
-    choice = tonumber(io.read())
+    choice = tonumber(io.read('*l'))
     if choice == 1 or choice == 2 or choice == 3 then
       validChoice = true
     else
@@ -36,9 +37,10 @@ local function gameMenu()
   print('  5) Rest')
   print('  6) Save and Main Menu')
   local validChoice = false
+  local choice
   repeat
     io.write('Enter choice (1-6): ')
-    choice = tonumber(io.read())
+    choice = tonumber(io.read('*l'))
     if choice > 1 and choice <= 6 then
       validChoice = true
     else
