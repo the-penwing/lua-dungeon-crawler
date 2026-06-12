@@ -10,9 +10,6 @@ local function saveGame(filename)
   else
     print('error: failed to save game!!')
   end
-  -- TODO: Serialize game.player to JSON and write to file
-  -- Use json.encode() to convert table to string
-  -- Use io.open() + file:write() to save
 end
 
 local function loadGame(filename)
@@ -25,10 +22,6 @@ local function loadGame(filename)
     print('error: failed to load game!!')
     return nil
   end
-  -- TODO: Read file, parse JSON, return player state
-  -- Use io.open() + file:read("*a") to load
-  -- Use json.decode() to convert string to table
-  -- Handle errors gracefully (missing file, corrupt JSON)
 end
 
 return {
