@@ -90,9 +90,17 @@ local function prevRoom()
 end
 
 local function switchWeapon()
-  local weaponsInInventory = {}
+  local inventory = game.player.inventory
+  -- make sure they have items / weapons
+  if #inventory == 0 then
+    print('you have no items!')
+    print('returning to game menu.')
+    return false
+  end
 
-  for i, inventoryItem in ipairs(game.player.inventory) do
+  -- build weapon list
+  local weaponsInInventory = {}
+  for i, inventoryItem in ipairs(inventory) do
     local itemData = items.getItemById(inventoryItem.id)
     -- check if the item is a weapon
     if itemData and items.items.weapons[itemData.id] then
@@ -103,7 +111,42 @@ local function switchWeapon()
       })
     end
   end
-  print(ui.formatInventory(game.player.inventory))
+
+  if #weaponsInInventory == 0 then
+    print('you have no weapons!')
+    print('returning to game menu.')
+    return false
+  end
+
+  print('choose your weapon:')
+  for i, weapon in ipairs(weaponsInInventory) do
+    -- "  i) <weapon-name> - <x-dmg>DMG & <x-hit-chance>% Hit Chance"
+    print(
+      '  '
+        .. i
+        .. ') '
+        .. weapon.data.name
+        .. ' - '
+        .. weapon.data.damage
+        .. 'DMG & '
+        .. weapon.data.hitChance
+        .. '% Hit Chance'
+    )
+  end
+  print('  ' .. (#weaponsInInventory + 1) .. ') return to game menu')
+  -- get item choice
+  io.write('choice (1-' .. (#weaponsInInventory + 1) .. '): ')
+  local choice = tonumber(io.read('*l'))
+  if choice == #weaponsInInventory + 1 then
+    print('returning to game menu.')
+    return false
+  elseif choice and choice >= 1 and choice <= #weaponsInInventory then
+    game.player.equippedWeapon = weaponsInInventory[choice].id
+    return true
+  else
+    print('invaild choice!')
+    return false
+  end
 end
 
 local function mainLoop()
