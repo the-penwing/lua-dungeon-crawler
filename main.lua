@@ -69,6 +69,7 @@ local function nextRoom()
     return false
   end
 end
+
 local function prevRoom()
   if rooms[game.player.currentRoom - 1] then
     game.player.currentRoom = game.player.currentRoom - 1
@@ -108,32 +109,41 @@ end
 local function mainLoop()
   local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
-  if choice == 3 then
-    return
-  end -- Exit game
-
   if choice == 2 then
     game = require('src.save').loadGame('save.json') or require('src.game')
     -- If load fails, fall back to fresh game
   end
+
+  if choice == 3 then
+    os.exit(0)
+  end -- Exit game
+
   -- Either new game or load game (game state already set)
   repeat
     -- gameMenu() displays options and returns choice
     -- gameMenu() handles: use item, change weapon, move rooms, rest, save & quit to main menu
-    local menuChoice = gameMenu()
-
-    if menuChoice == 'quit' then
-      -- Return to main menu
-      break
-    elseif menuChoice == 'enter_room' then
-      -- Check if room has enemies
-      if #rooms[game.player.currentRoom].enemies > 0 then
-        local result = combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
-        -- Show post-combat flow (loot, rest, use items, save)
-      else
-        -- Show room, no enemies
-      end
+    local gameMenuChoice = gameMenu()
+    if gameMenuChoice == 1 then
+      -- use item
+      combat.utilise.useItem(combat.utilise.choiceItem())
+    elseif gameMenuChoice == 2 then
+      -- switch weapon
+      switchWeapon()
+    elseif gameMenuChoice == 3 then
+      -- next room
+      nextRoom()
+    elseif gameMenuChoice == 4 then
+      -- previous room
+      prevRoom()
+    elseif gameMenuChoice == 5 then
+      -- rest
+      return
+    elseif gameMenuChoice == 6 then
+      -- save and main menu
+      return
     end
   -- Handle other choices (use item, change weapon, rest, move room)
   until false -- Loop until player quits to main menu
 end
+
+mainLoop()
