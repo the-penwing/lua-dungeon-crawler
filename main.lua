@@ -4,53 +4,6 @@ local rooms = require('src.rooms')
 local items = require('src.items')
 local ui = require('src.ui')
 
-local function mainMenu()
-  ui.clear()
-  local validChoice = false
-  local choice
-  repeat
-    print('--- lua dungeon crawler ---')
-    print('\n  1) new game')
-    print('  2) load game')
-    print('  3) exit')
-    io.write('choice (1-3): ')
-    choice = tonumber(io.read('*l'))
-    if choice == 1 or choice == 2 or choice == 3 then
-      validChoice = true
-    else
-      print('please choose a valid option(1-3)')
-    end
-  until validChoice == true
-  return choice
-end
-local function gameMenu()
-  local currentRoom = game.player.currentRoom
-  local roomDescription = rooms[currentRoom].description
-  print('--- Room ' .. currentRoom .. ': ' .. roomDescription .. ' ---')
-  print()
-  ui.displayGameState()
-  print('\nGame Menu:')
-  print('  1) Use Item')
-  print('  2) Switch Weapon')
-  print('  3) Next Room')
-  print('  4) Prev. Room')
-  print('  5) Rest')
-  print('  6) Save and Main Menu')
-  local validChoice = false
-  local choice
-  repeat
-    io.write('Enter choice (1-6): ')
-    choice = tonumber(io.read('*l'))
-    if choice >= 1 and choice <= 6 then
-      validChoice = true
-    else
-      print('Invaild choice!')
-      print('Enter 1-6')
-    end
-  until validChoice == true
-  return choice
-end
-
 local function nextRoom()
   if rooms[game.player.currentRoom + 1] then
     game.player.currentRoom = game.player.currentRoom + 1
@@ -160,7 +113,7 @@ end
 
 local function mainLoop()
   while true do
-    local choice = mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
+    local choice = require('src.menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
     if choice == 2 then
       local playerState = require('src.save').loadGame('save.json')
@@ -177,7 +130,7 @@ local function mainLoop()
     repeat
       -- gameMenu() displays options and returns choice
       -- gameMenu() handles: use item, change weapon, move rooms, rest, save & quit to main menu
-      local gameMenuChoice = gameMenu()
+      local gameMenuChoice = require('src.menus').game.gameMenu()
       if gameMenuChoice == 1 then
         -- use item
         combat.utilise.choiceItem()
