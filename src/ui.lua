@@ -1,7 +1,7 @@
 local game = require('src.game')
 local items = require('src.items')
 local function clear()
-  if package.config:sub(1, 1) == '\\' then
+  if os.getenv('OS') == 'Windows_NT' then
     os.execute('cls')
   else
     os.execute('clear')
