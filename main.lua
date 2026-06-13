@@ -1,46 +1,7 @@
 local combat = require('src.combat')
 local game = require('src.game')
-local rooms = require('src.rooms')
+local navigation = require('src.navigation.movement')
 local items = require('src.items')
-local ui = require('src.ui')
-
-local function nextRoom()
-  if rooms[game.player.currentRoom + 1] then
-    game.player.currentRoom = game.player.currentRoom + 1
-    local currentRoom = game.player.currentRoom
-    print('You move to the next room...')
-    ui.displayRoomDescription()
-    if #rooms[currentRoom].enemies > 0 then
-      combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
-      return true
-    else
-      print('no enemies here.')
-      return true
-    end
-  else
-    print("you can't go this way!")
-    return false
-  end
-end
-
-local function prevRoom()
-  if rooms[game.player.currentRoom - 1] then
-    game.player.currentRoom = game.player.currentRoom - 1
-    local currentRoom = game.player.currentRoom
-    print('You move back to the previous room...')
-    ui.displayRoomDescription()
-    if #rooms[currentRoom].enemies > 0 then
-      combat.loop.combatLoop(rooms[game.player.currentRoom].enemies)
-      return true
-    else
-      print('no enemies here.')
-      return true
-    end
-  else
-    print("you can't go this way!")
-    return false
-  end
-end
 
 local function switchWeapon()
   local inventory = game.player.inventory
@@ -139,10 +100,10 @@ local function mainLoop()
         switchWeapon()
       elseif gameMenuChoice == 3 then
         -- next room
-        nextRoom()
+        navigation.nextRoom()
       elseif gameMenuChoice == 4 then
         -- previous room
-        prevRoom()
+        navigation.prevRoom()
       elseif gameMenuChoice == 5 then
         -- rest
         rest()

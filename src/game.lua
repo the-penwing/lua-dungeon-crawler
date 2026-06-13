@@ -1,4 +1,4 @@
-local rooms = require('src.rooms')
+local rooms = require('src.navigation.rooms')
 
 local game = {
   player = {
