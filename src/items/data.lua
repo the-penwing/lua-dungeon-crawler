@@ -29,18 +29,5 @@ local items = {
     gold_coin = { name = 'Gold Coin', id = 'goldcoin', type = 'loot' },
   },
 }
-local function getItemById(itemId)
-  for _, v in pairs(items) do
-    for _, itemData in pairs(v) do
-      if itemData.id == itemId then
-        return itemData
-      end
-    end
-  end
-  return nil
-end
 
-return {
-  items = items,
-  getItemById = getItemById,
-}
+return items
