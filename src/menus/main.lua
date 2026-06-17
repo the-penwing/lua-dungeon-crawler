@@ -1,4 +1,4 @@
-local ui = require('ui')
+local ui = require('ui.ui-funcs')
 local function mainMenu()
   ui.clear()
   local validChoice = false

@@ -1,6 +1,6 @@
 local rooms = require('navigation.rooms')
 local game = require('game')
-local ui = require('ui')
+local ui = require('ui.ui-funcs')
 local combat = require('combat')
 local function nextRoom()
   if rooms[game.player.currentRoom + 1] then

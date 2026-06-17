@@ -1,4 +1,4 @@
-local ui = require('ui')
+local ui = require('ui.ui-funcs')
 local game = require('game')
 local rooms = require('navigation.rooms')
 local function gameMenu()

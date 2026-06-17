@@ -3,7 +3,7 @@ local actions = require('combat.actions')
 local casting = require('combat.casting')
 local utilise = require('combat.utilise')
 local enemy_module = require('combat.enemy')
-local ui = require('ui')
+local ui = require('ui.ui-funcs')
 
 local function regenMP()
   game.player.mp = math.min(game.player.mp + 2, game.player.maxMP)
