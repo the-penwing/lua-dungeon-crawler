@@ -15,7 +15,7 @@ local function switchWeapon()
   -- build weapon list
   local weaponsInInventory = {}
   for i, inventoryItem in ipairs(inventory) do
-    local itemData = items.getItemById(inventoryItem.id)
+    local itemData = items.funcs.getItemById(inventoryItem.id)
     -- check if the item is a weapon
     if itemData and itemData.type == 'weapon' then
       table.insert(weaponsInInventory, {

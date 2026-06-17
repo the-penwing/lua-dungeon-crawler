@@ -11,7 +11,7 @@ local function useItem(itemIndex)
   end
 
   -- Get the full item data
-  local usedItem = items.getItemById(inventorySlot.id)
+  local usedItem = items.funcs.getItemById(inventorySlot.id)
 
   if not usedItem then
     print('error: item not found!')
@@ -47,7 +47,7 @@ local function choiceItem()
   -- Build consumable-only list
   local consumables = {}
   for i, item in ipairs(inventory) do
-    local itemData = items.getItemById(item.id)
+    local itemData = items.funcs.getItemById(item.id)
     if itemData and itemData.type == 'consumable' then
       table.insert(consumables, { index = i, data = item, info = itemData })
     end

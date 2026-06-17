@@ -10,7 +10,7 @@ end
 local function formatInventory(inventory)
   local inventoryItems = {}
   for _, item in ipairs(inventory) do
-    local itemData = items.getItemById(item.id)
+    local itemData = items.funcs.getItemById(item.id)
     if itemData then
       table.insert(inventoryItems, itemData.name .. ' (x' .. item.quantity .. ')')
     end
@@ -29,7 +29,7 @@ local function displayGameState()
   if game.player.hp > 0 then
     print('  Health: ' .. game.player.hp .. '/' .. game.player.maxHP)
     print('  MP: ' .. game.player.mp .. '/' .. game.player.maxMP)
-    print('  Equipped Weapon: ' .. items.getItemById(game.player.equippedWeapon).name)
+    print('  Equipped Weapon: ' .. items.funcs.getItemById(game.player.equippedWeapon).name)
     print('  Inventory: ' .. formatInventory(game.player.inventory))
   else
     print('You have died')
@@ -59,7 +59,7 @@ local function displayCombatState(enemies)
   print('Player Stats:')
   print('  Health: ' .. game.player.hp .. '/' .. game.player.maxHP)
   print('  MP: ' .. game.player.mp .. '/' .. game.player.maxMP)
-  print('  Equipped Weapon: ' .. items.getItemById(game.player.equippedWeapon).name)
+  print('  Equipped Weapon: ' .. items.funcs.getItemById(game.player.equippedWeapon).name)
   displayEnemies(enemies)
 end
 

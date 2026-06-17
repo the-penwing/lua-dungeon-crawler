@@ -9,4 +9,6 @@ local function getItemById(itemId)
   return nil
 end
 
-return getItemById
+return {
+  getItemById = getItemById,
+}
