@@ -1,9 +1,9 @@
 return {
-  actions = require('src.combat.actions'),
-  casting = require('src.combat.casting'),
-  utilise = require('src.combat.utilise'),
-  targeting = require('src.combat.targeting'),
-  enemy = require('src.combat.enemy'),
-  magic = require('src.combat.magic'),
-  loop = require('src.combat.loop'),
+  actions = require('combat.actions'),
+  casting = require('combat.casting'),
+  utilise = require('combat.utilise'),
+  targeting = require('combat.targeting'),
+  enemy = require('combat.enemy'),
+  magic = require('combat.magic'),
+  loop = require('combat.loop'),
 }
