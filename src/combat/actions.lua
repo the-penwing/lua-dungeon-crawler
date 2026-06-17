@@ -1,7 +1,7 @@
-local game = require('src.game')
-local items = require('src.items')
-local targeting = require('src.combat.targeting')
-local enemy_module = require('src.combat.enemy')
+local game = require('game')
+local items = require('items')
+local targeting = require('combat.targeting')
+local enemy_module = require('combat.enemy')
 
 local function getPlayerAction()
   local validChoice = false

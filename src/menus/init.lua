@@ -1,4 +1,4 @@
 return {
-  game = require('src.menus.game'),
-  main = require('src.menus.main'),
+  game = require('menus.game'),
+  main = require('menus.main'),
 }

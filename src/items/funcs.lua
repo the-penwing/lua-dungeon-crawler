@@ -1,5 +1,5 @@
 local function getItemById(itemId)
-  for _, v in pairs(require('src.items.data')) do
+  for _, v in pairs(require('items.data')) do
     for _, itemData in pairs(v) do
       if itemData.id == itemId then
         return itemData
@@ -10,7 +10,7 @@ local function getItemById(itemId)
 end
 
 local function switchWeapon()
-  local inventory = require('src.game').player.inventory
+  local inventory = require('game').player.inventory
   -- make sure they have items / weapons
   if #inventory == 0 then
     print('you have no items!')
@@ -61,7 +61,7 @@ local function switchWeapon()
     print('returning to game menu.')
     return false
   elseif choice and choice >= 1 and choice <= #weaponsInInventory then
-    require('src.game').player.equippedWeapon = weaponsInInventory[choice].id
+    require('game').player.equippedWeapon = weaponsInInventory[choice].id
     return true
   else
     print('invaild choice!')

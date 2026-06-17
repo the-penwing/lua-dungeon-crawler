@@ -1,5 +1,5 @@
-local game = require('src.game')
-local items = require('src.items')
+local game = require('game')
+local items = require('items')
 local function clear()
   if os.getenv('OS') == 'Windows_NT' then
     os.execute('cls')

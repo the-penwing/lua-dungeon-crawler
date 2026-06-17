@@ -1,4 +1,4 @@
 return {
-  data = require('src.items.data'),
-  funcs = require('src.items.funcs'),
+  data = require('items.data'),
+  funcs = require('items.funcs'),
 }

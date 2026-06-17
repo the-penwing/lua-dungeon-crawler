@@ -1,7 +1,7 @@
-local game = require('src.game')
-local magic = require('src.combat.magic')
-local enemy_module = require('src.combat.enemy')
-local targeting = require('src.combat.targeting')
+local game = require('game')
+local magic = require('combat.magic')
+local enemy_module = require('combat.enemy')
+local targeting = require('combat.targeting')
 
 local function castFireball(target)
   if game.player.mp < 3 then

@@ -1,7 +1,5 @@
-local combat = require('src.combat')
-local game = require('src.game')
-local navigation = require('src.navigation.movement')
-local items = require('src.items')
+local game = require('game')
+local items = require('items')
 
 local function rest()
   -- heal 10% current hp
@@ -14,10 +12,10 @@ end
 
 local function mainLoop()
   while true do
-    local choice = require('src.menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
+    local choice = require('menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
     if choice == 2 then
-      local playerState = require('src.save').loadGame('save.json')
+      local playerState = require('save').loadGame('save.json')
       if playerState then
         game.player = playerState
       end
@@ -31,25 +29,25 @@ local function mainLoop()
     repeat
       -- gameMenu() displays options and returns choice
       -- gameMenu() handles: use item, change weapon, move rooms, rest, save & quit to main menu
-      local gameMenuChoice = require('src.menus').game.gameMenu()
+      local gameMenuChoice = require('menus').game.gameMenu()
       if gameMenuChoice == 1 then
         -- use item
-        combat.utilise.choiceItem()
+        require('combat').utilise.choiceItem()
       elseif gameMenuChoice == 2 then
         -- switch weapon
         items.funcs.switchWeapon()
       elseif gameMenuChoice == 3 then
         -- next room
-        navigation.nextRoom()
+        require('navigation.movement').nextRoom()
       elseif gameMenuChoice == 4 then
         -- previous room
-        navigation.prevRoom()
+        require('navigation.movement').prevRoom()
       elseif gameMenuChoice == 5 then
         -- rest
         rest()
       elseif gameMenuChoice == 6 then
         -- save and main menu
-        require('src.save').saveGame('save.json')
+        require('save').saveGame('save.json')
         break
       end
     -- Handle other choices (use item, change weapon, rest, move room)

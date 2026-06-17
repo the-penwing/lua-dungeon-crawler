@@ -1,6 +1,6 @@
-local ui = require('src.ui')
-local game = require('src.game')
-local rooms = require('src.navigation.rooms')
+local ui = require('ui')
+local game = require('game')
+local rooms = require('navigation.rooms')
 local function gameMenu()
   local currentRoom = game.player.currentRoom
   local roomDescription = rooms[currentRoom].description

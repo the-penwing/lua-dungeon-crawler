@@ -1,7 +1,7 @@
-local rooms = require('src.navigation.rooms')
-local game = require('src.game')
-local ui = require('src.ui')
-local combat = require('src.combat')
+local rooms = require('navigation.rooms')
+local game = require('game')
+local ui = require('ui')
+local combat = require('combat')
 local function nextRoom()
   if rooms[game.player.currentRoom + 1] then
     game.player.currentRoom = game.player.currentRoom + 1

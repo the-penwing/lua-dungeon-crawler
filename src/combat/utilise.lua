@@ -1,5 +1,5 @@
-local game = require('src.game')
-local items = require('src.items')
+local game = require('game')
+local items = require('items')
 
 local function useItem(itemIndex)
   -- Get the inventory slot
