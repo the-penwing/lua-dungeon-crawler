@@ -22,7 +22,7 @@ local function mainLoop()
     local choice = require('menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
     if choice == 2 then
-      local playerState = require('save').loadGame('save.json')
+      local playerState = require('game.save').loadGame('save.json')
       if playerState then
         gameState.player = playerState
       else
@@ -56,7 +56,7 @@ local function mainLoop()
         rest()
       elseif gameMenuChoice == 6 then
         -- save and main menu
-        require('save').saveGame('save.json')
+        require('game.save').saveGame('save.json')
         break
       end
     -- Handle other choices (use item, change weapon, rest, move room)
