@@ -18,6 +18,8 @@ local function mainLoop()
       local playerState = require('save').loadGame('save.json')
       if playerState then
         game.player = playerState
+      else
+        print('Error: Failed to load save file!')
       end
     end
 

@@ -1,1 +1,1 @@
-{"health":100,"maxHealth":100,"spellCooldown":false,"currentRoom":1,"inventory":[{"quantity":1,"id":"rustysword"},{"quantity":1,"id":"healingpotion"}],"maxMP":20,"mp":20,"equippedWeapon":"rustysword"}
+{"mp":20,"maxHP":100,"inventory":[{"quantity":1,"id":"rustysword"},{"quantity":1,"id":"healingpotion"}],"currentRoom":1,"equippedWeapon":"rustysword","hp":100,"spellCooldown":false,"maxMP":20}
