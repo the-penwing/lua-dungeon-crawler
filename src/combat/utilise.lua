@@ -1,9 +1,9 @@
-local game = require('game')
+local gameState = require('game.gameState')
 local items = require('items')
 
 local function useItem(itemIndex)
   -- Get the inventory slot
-  local inventorySlot = game.player.inventory[itemIndex]
+  local inventorySlot = gameState.player.inventory[itemIndex]
 
   if not inventorySlot then
     print("you don't have that item!")
@@ -22,14 +22,14 @@ local function useItem(itemIndex)
   if inventorySlot.quantity > 0 then
     -- Apply effect based on item ID
     if usedItem.id == 'healingpotion' then
-      game.player.hp = math.min(game.player.hp + usedItem.heal, game.player.maxHP)
-      print('used ' .. usedItem.name .. '. health restored to ' .. game.player.hp .. '!')
+      gameState.player.hp = math.min(gameState.player.hp + usedItem.heal, gameState.player.maxHP)
+      print('used ' .. usedItem.name .. '. health restored to ' .. gameState.player.hp .. '!')
     end
 
     -- Decrement and remove if empty
     inventorySlot.quantity = inventorySlot.quantity - 1
     if inventorySlot.quantity == 0 then
-      table.remove(game.player.inventory, itemIndex)
+      table.remove(gameState.player.inventory, itemIndex)
     end
   else
     print("you don't have that item!")
@@ -37,7 +37,7 @@ local function useItem(itemIndex)
   return true
 end
 local function choiceItem()
-  local inventory = game.player.inventory
+  local inventory = gameState.player.inventory
   if #inventory == 0 then
     print('you have no items!')
     print('returning to action menu.')

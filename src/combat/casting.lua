@@ -1,36 +1,36 @@
-local game = require('game')
+local gameState = require('game.gameState')
 local magic = require('combat.magic')
 local enemy_module = require('combat.enemy')
 local targeting = require('combat.targeting')
 
 local function castFireball(target)
-  if game.player.mp < 3 then
+  if gameState.player.mp < 3 then
     print("you don't have enough MP to cast fireball.")
     return false
   end
-  game.player.mp = game.player.mp - 3
+  gameState.player.mp = gameState.player.mp - 3
 
   target.health = target.health - 20
   print('fireball was a success!!')
   if math.random(1, 100) <= 5 then
     print('but you got burned!!')
-    local selfDamage = math.floor(game.player.hp * 0.05)
-    game.player.hp = game.player.hp - selfDamage
+    local selfDamage = math.floor(gameState.player.hp * 0.05)
+    gameState.player.hp = gameState.player.hp - selfDamage
     print('you took ' .. selfDamage .. ' damage from the backfire!')
   end
   return true
 end
 
 local function castHealingWhisper()
-  if game.player.mp < 3 then
+  if gameState.player.mp < 3 then
     print("you don't have enough MP to cast healing whisper.")
     return false
   end
-  game.player.mp = game.player.mp - 3
+  gameState.player.mp = gameState.player.mp - 3
 
-  local oldHealth = game.player.hp
-  game.player.hp = math.min(game.player.hp + 20, game.player.maxHP)
-  local healedAmount = game.player.hp - oldHealth
+  local oldHealth = gameState.player.hp
+  gameState.player.hp = math.min(gameState.player.hp + 20, gameState.player.maxHP)
+  local healedAmount = gameState.player.hp - oldHealth
 
   print('you healed ' .. healedAmount .. ' HP')
   print('healing whisper was a success!!')
@@ -38,7 +38,7 @@ local function castHealingWhisper()
 end
 local function choiceSpell(enemies)
   local spellValid = false
-  if game.player.spellCooldown then
+  if gameState.player.spellCooldown then
     print("you can't cast spells this turn, wait until next turn")
     return false
   else
@@ -54,14 +54,14 @@ local function choiceSpell(enemies)
       local spellChoice = tonumber(io.read('*l'))
 
       if spellChoice == 1 then
-        if game.player.mp >= 3 then
+        if gameState.player.mp >= 3 then
           local targetIndex, target = targeting.selectTarget(enemies)
           if not target or not targetIndex then
             print('error: invalid target!!')
             return false
           end
           castFireball(target)
-          game.player.spellCooldown = true
+          gameState.player.spellCooldown = true
           if target.health <= 0 then
             enemy_module.awardLoot(target)
             table.remove(enemies, targetIndex)
@@ -71,9 +71,9 @@ local function choiceSpell(enemies)
           print('not enough MP!')
         end
       elseif spellChoice == 2 then
-        if game.player.mp >= 3 then
+        if gameState.player.mp >= 3 then
           castHealingWhisper()
-          game.player.spellCooldown = true
+          gameState.player.spellCooldown = true
           spellValid = true
         else
           print('not enough MP!')

@@ -1,4 +1,4 @@
-local game = require('game')
+local gameState = require('game.gameState')
 local items = require('items')
 local function clear()
   if os.getenv('OS') == 'Windows_NT' then
@@ -26,16 +26,16 @@ local function formatEnemies(enemies)
 end
 local function displayGameState()
   print('Player Stats:')
-  if game.player.hp > 0 then
-    print('  Health: ' .. game.player.hp .. '/' .. game.player.maxHP)
-    print('  MP: ' .. game.player.mp .. '/' .. game.player.maxMP)
-    print('  Equipped Weapon: ' .. items.funcs.getItemById(game.player.equippedWeapon).name)
-    print('  Inventory: ' .. formatInventory(game.player.inventory))
+  if gameState.player.hp > 0 then
+    print('  Health: ' .. gameState.player.hp .. '/' .. gameState.player.maxHP)
+    print('  MP: ' .. gameState.player.mp .. '/' .. gameState.player.maxMP)
+    print('  Equipped Weapon: ' .. items.funcs.getItemById(gameState.player.equippedWeapon).name)
+    print('  Inventory: ' .. formatInventory(gameState.player.inventory))
   else
     print('You have died')
   end
   print('\nGame Stats:')
-  if game.bossBeat == false then
+  if gameState.bossBeat == false then
     print('  Boss Dead: Not yet')
   else
     print('  Boss Dead: Yes, Great Work!!')
@@ -43,7 +43,7 @@ local function displayGameState()
 end
 
 local function displayRoomDescription()
-  print(game.rooms[game.player.currentRoom].description)
+  print(gameState.rooms[gameState.player.currentRoom].description)
 end
 
 local function displayEnemies(enemies)
@@ -57,9 +57,9 @@ end
 
 local function displayCombatState(enemies)
   print('Player Stats:')
-  print('  Health: ' .. game.player.hp .. '/' .. game.player.maxHP)
-  print('  MP: ' .. game.player.mp .. '/' .. game.player.maxMP)
-  print('  Equipped Weapon: ' .. items.funcs.getItemById(game.player.equippedWeapon).name)
+  print('  Health: ' .. gameState.player.hp .. '/' .. gameState.player.maxHP)
+  print('  MP: ' .. gameState.player.mp .. '/' .. gameState.player.maxMP)
+  print('  Equipped Weapon: ' .. items.funcs.getItemById(gameState.player.equippedWeapon).name)
   displayEnemies(enemies)
 end
 

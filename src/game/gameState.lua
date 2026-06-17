@@ -1,6 +1,6 @@
 local rooms = require('navigation.rooms')
 
-local game = {
+local gameState = {
   player = {
     hp = 100,
     maxHP = 100,
@@ -19,4 +19,4 @@ local game = {
   playerAlive = true,
 }
 
-return game
+return gameState

@@ -1,4 +1,4 @@
-local game = require('game')
+local gameState = require('game.gameState')
 local function enemyAttack(enemy)
   if math.random(1, 100) <= enemy.hitChance then
     local damage
@@ -12,7 +12,7 @@ local function enemyAttack(enemy)
       damage = enemy.damage
     end
 
-    game.player.hp = game.player.hp - damage
+    gameState.player.hp = gameState.player.hp - damage
     print('ouch, ' .. enemy.name .. ' did ' .. damage .. ' to you')
   else
     print(enemy.name .. "'s attack missed!")
@@ -23,8 +23,8 @@ local function enemyAttack(enemy)
     enemy.attackPhase = (enemy.attackPhase + 1) % 4 -- Cycles 0,1,2,3,0,1,2,3...
   end
 
-  if game.player.hp <= 0 then
-    game.playerAlive = false
+  if gameState.player.hp <= 0 then
+    gameState.playerAlive = false
     print('oh snap, that blow killed you.')
   end
 end
@@ -38,7 +38,7 @@ local function awardLoot(enemy)
       print('  - ' .. itemData.name .. ' (x' .. lootItem.quantity .. ')')
       -- Check if item already in inventory
       local found = false
-      for _, invItem in ipairs(game.player.inventory) do
+      for _, invItem in ipairs(gameState.player.inventory) do
         if invItem.id == lootItem.id then -- Change .name to .id
           -- Item exists, add quantity
           invItem.quantity = invItem.quantity + lootItem.quantity
@@ -49,7 +49,7 @@ local function awardLoot(enemy)
 
       -- If not found, add new item
       if not found then
-        table.insert(game.player.inventory, { id = lootItem.id, quantity = lootItem.quantity }) -- Change .name to .id
+        table.insert(gameState.player.inventory, { id = lootItem.id, quantity = lootItem.quantity }) -- Change .name to .id
       end
     end
   end

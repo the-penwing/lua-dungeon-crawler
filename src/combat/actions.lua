@@ -1,4 +1,4 @@
-local game = require('game')
+local gameState = require('game.gameState')
 local items = require('items')
 local targeting = require('combat.targeting')
 local enemy_module = require('combat.enemy')
@@ -24,7 +24,7 @@ local function getPlayerAction()
 end
 
 local function playerAttack(enemy)
-  local weapon = items.funcs.getItemById(game.player.equippedWeapon)
+  local weapon = items.funcs.getItemById(gameState.player.equippedWeapon)
   if not weapon then
     print('error: equipped weapon not found!!')
     return

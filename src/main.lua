@@ -1,13 +1,20 @@
-local game = require('game')
+local gameState = require('game.gameState')
 local items = require('items')
 
 local function rest()
   -- heal 10% current hp
-  game.player.hp = math.min(math.floor(game.player.hp * (1 + 10 / 100)), game.player.maxHP)
+  gameState.player.hp =
+    math.min(math.floor(gameState.player.hp * (1 + 10 / 100)), gameState.player.maxHP)
   -- regen 5% of current mp
-  game.player.mp = math.min(math.floor(game.player.mp * (1 + 5 / 100)), game.player.maxMP)
+  gameState.player.mp =
+    math.min(math.floor(gameState.player.mp * (1 + 5 / 100)), gameState.player.maxMP)
   -- display the results
-  print('resting restored your HP to: ' .. game.player.hp .. ', and your MP to: ' .. game.player.mp)
+  print(
+    'resting restored your HP to: '
+      .. gameState.player.hp
+      .. ', and your MP to: '
+      .. gameState.player.mp
+  )
 end
 
 local function mainLoop()
@@ -17,7 +24,7 @@ local function mainLoop()
     if choice == 2 then
       local playerState = require('save').loadGame('save.json')
       if playerState then
-        game.player = playerState
+        gameState.player = playerState
       else
         print('Error: Failed to load save file!')
       end
