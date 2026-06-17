@@ -1,4 +1,4 @@
 return {
   data = require('src.items.data'),
-  getItemById = require('src.items.funcs'),
+  funcs = require('src.items.funcs'),
 }
