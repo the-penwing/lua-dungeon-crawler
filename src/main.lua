@@ -1,6 +1,4 @@
 local gameState = require('game.gameState')
-local items = require('items')
-
 local function mainLoop()
   while true do
     local choice = require('menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
@@ -28,7 +26,7 @@ local function mainLoop()
         require('combat').utilise.choiceItem()
       elseif gameMenuChoice == 2 then
         -- switch weapon
-        items.funcs.switchWeapon()
+        require('items.funcs').switchWeapon()
       elseif gameMenuChoice == 3 then
         -- next room
         require('navigation.movement').nextRoom()

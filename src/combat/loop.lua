@@ -3,7 +3,6 @@ local actions = require('combat.actions')
 local casting = require('combat.casting')
 local utilise = require('combat.utilise')
 local enemy_module = require('combat.enemy')
-local ui = require('ui.ui-funcs')
 
 local function regenMP()
   gameState.player.mp = math.min(gameState.player.mp + 2, gameState.player.maxMP)
@@ -12,7 +11,7 @@ end
 local function combatLoop(enemies)
   while #enemies > 0 and gameState.player.hp > 0 do
     -- 1. Display state and clear spell spell cooldown
-    ui.displayCombatState(enemies)
+    require('ui.display').displayCombatState(enemies)
 
     -- 2. Get player action (1-4)
     local choice = actions.getPlayerAction()
