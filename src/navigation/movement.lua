@@ -9,8 +9,13 @@ local function nextRoom()
     print('You move to the next room...')
     ui.display.displayRoomDescription()
     if #rooms[currentRoom].enemies > 0 then
-      combat.loop.combatLoop(rooms[gameState.player.currentRoom].enemies)
-      return true
+      local success, result = pcall(function()
+        return combat.loop.combatLoop(rooms[gameState.player.currentRoom].enemies)
+      end)
+      if not success then
+        print('COMBAT ERROR: ' .. tostring(result))
+        return false
+      end
     else
       print('no enemies here.')
       return true
@@ -28,8 +33,13 @@ local function prevRoom()
     print('You move back to the previous room...')
     ui.display.displayRoomDescription()
     if #rooms[currentRoom].enemies > 0 then
-      combat.loop.combatLoop(rooms[gameState.player.currentRoom].enemies)
-      return true
+      local success, result = pcall(function()
+        return combat.loop.combatLoop(rooms[gameState.player.currentRoom].enemies)
+      end)
+      if not success then
+        print('COMBAT ERROR: ' .. tostring(result))
+        return false
+      end
     else
       print('no enemies here.')
       return true
