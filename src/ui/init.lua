@@ -1,3 +1,5 @@
 return {
-  ui = require('ui.ui-funcs'),
+  clear = require('ui.clear'),
+  display = require('ui.display'),
+  formatting = require('ui.formatting'),
 }

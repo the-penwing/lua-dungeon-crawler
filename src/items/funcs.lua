@@ -10,7 +10,7 @@ local function getItemById(itemId)
 end
 
 local function switchWeapon()
-  local inventory = require('game').player.inventory
+  local inventory = require('game.gameState').player.inventory
   -- make sure they have items / weapons
   if #inventory == 0 then
     print('you have no items!')

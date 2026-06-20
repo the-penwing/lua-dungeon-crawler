@@ -1,4 +1,4 @@
-local ui = require('ui.ui-funcs')
+local ui = require('ui')
 local gameState = require('game.gameState')
 local rooms = require('navigation.rooms')
 local function gameMenu()
@@ -6,7 +6,7 @@ local function gameMenu()
   local roomDescription = rooms[currentRoom].description
   print('--- Room ' .. currentRoom .. ': ' .. roomDescription .. ' ---')
   print()
-  ui.displayGameState()
+  ui.display.displayGameState()
   print('\nGame Menu:')
   print('  1) Use Item')
   print('  2) Switch Weapon')
@@ -19,7 +19,7 @@ local function gameMenu()
   repeat
     io.write('Enter choice (1-6): ')
     choice = tonumber(io.read('*l'))
-    if choice >= 1 and choice <= 6 then
+    if choice and choice >= 1 and choice <= 6 then
       validChoice = true
     else
       print('Invaild choice!')

@@ -1,22 +1,4 @@
 local gameState = require('game.gameState')
-local items = require('items')
-
-local function rest()
-  -- heal 10% current hp
-  gameState.player.hp =
-    math.min(math.floor(gameState.player.hp * (1 + 10 / 100)), gameState.player.maxHP)
-  -- regen 5% of current mp
-  gameState.player.mp =
-    math.min(math.floor(gameState.player.mp * (1 + 5 / 100)), gameState.player.maxMP)
-  -- display the results
-  print(
-    'resting restored your HP to: '
-      .. gameState.player.hp
-      .. ', and your MP to: '
-      .. gameState.player.mp
-  )
-end
-
 local function mainLoop()
   while true do
     local choice = require('menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
@@ -44,7 +26,7 @@ local function mainLoop()
         require('combat').utilise.choiceItem()
       elseif gameMenuChoice == 2 then
         -- switch weapon
-        items.funcs.switchWeapon()
+        require('items.funcs').switchWeapon()
       elseif gameMenuChoice == 3 then
         -- next room
         require('navigation.movement').nextRoom()
@@ -53,7 +35,7 @@ local function mainLoop()
         require('navigation.movement').prevRoom()
       elseif gameMenuChoice == 5 then
         -- rest
-        rest()
+        require('game.rest').rest()
       elseif gameMenuChoice == 6 then
         -- save and main menu
         require('game.save').saveGame('save.json')

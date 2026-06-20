@@ -33,7 +33,7 @@ local function awardLoot(enemy)
   if #enemy.loot > 0 then
     print('\n' .. enemy.name .. ' dropped:')
     for _, lootItem in ipairs(enemy.loot) do
-      local itemData = require('items').getItemById(lootItem.id)
+      local itemData = require('items.funcs').getItemById(lootItem.id)
       ---@diagnostic disable-next-line: need-check-nil
       print('  - ' .. itemData.name .. ' (x' .. lootItem.quantity .. ')')
       -- Check if item already in inventory
