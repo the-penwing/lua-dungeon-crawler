@@ -61,7 +61,7 @@ local function switchWeapon()
     print('returning to game menu.')
     return false
   elseif choice and choice >= 1 and choice <= #weaponsInInventory then
-    require('game').player.equippedWeapon = weaponsInInventory[choice].id
+    require('game.gameState').player.equippedWeapon = weaponsInInventory[choice].id
     return true
   else
     print('invaild choice!')

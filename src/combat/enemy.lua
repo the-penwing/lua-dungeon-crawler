@@ -34,22 +34,30 @@ local function awardLoot(enemy)
     print('\n' .. enemy.name .. ' dropped:')
     for _, lootItem in ipairs(enemy.loot) do
       local itemData = require('items.funcs').getItemById(lootItem.id)
-      ---@diagnostic disable-next-line: need-check-nil
-      print('  - ' .. itemData.name .. ' (x' .. lootItem.quantity .. ')')
-      -- Check if item already in inventory
-      local found = false
-      for _, invItem in ipairs(gameState.player.inventory) do
-        if invItem.id == lootItem.id then -- Change .name to .id
-          -- Item exists, add quantity
-          invItem.quantity = invItem.quantity + lootItem.quantity
-          found = true
-          break
-        end
-      end
 
-      -- If not found, add new item
-      if not found then
-        table.insert(gameState.player.inventory, { id = lootItem.id, quantity = lootItem.quantity }) -- Change .name to .id
+      if itemData then
+        print('  - ' .. itemData.name .. ' (x' .. lootItem.quantity .. ')')
+
+        -- Check if item already in inventory
+        local found = false
+        for _, invItem in ipairs(gameState.player.inventory) do
+          if invItem.id == lootItem.id then -- Change .name to .id
+            -- Item exists, add quantity
+            invItem.quantity = invItem.quantity + lootItem.quantity
+            found = true
+            break
+          end
+        end
+
+        -- If not found, add new item
+        if not found then
+          table.insert(
+            gameState.player.inventory,
+            { id = lootItem.id, quantity = lootItem.quantity }
+          ) -- Change .name to .id
+        end
+      else
+        print('error: loot item "' .. lootItem.id .. '" not found in the items table!')
       end
     end
   end
