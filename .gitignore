@@ -1,2 +1,12 @@
+# Dev notes
 notes/
+
+# Test save file
 src/save.json
+
+# Build outputs and components
+c-wrapper/*.lua.map
+c-wrapper/*.lua
+c-wrapper/*.luac
+c-wrapper/*.h
+c-wrapper/bin/
