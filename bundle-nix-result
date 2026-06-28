@@ -1,10 +1,31 @@
 #!/usr/bin/env bash
-mkdir -p bundles && for arch_dir in dist/*; do \
-  arch=$(basename "$arch_dir"); \
-  echo "Bundling $arch..."; \
-  if [[ "$arch" == *"windows"* ]]; then \
-    (cd "$arch_dir" && zip -q -r "../../bundles/blackjack-$arch.zip" ./*); \
-  else \
-    (cd "$arch_dir" && tar -czf "../../bundles/blackjack-$arch.tar.gz" ./*); \
-  fi \
+
+mkdir -p dist
+rm -f dist/*
+
+echo "Exporting binaries..."
+
+for target_dir in result/*; do
+  if [ -d "$target_dir" ]; then
+    arch=$(basename "$target_dir")
+
+    # Case 1: Pure Windows target
+    if [ -f "$target_dir/bin/dungeon-crawler-cli.exe" ]; then
+      cp "$target_dir/bin/dungeon-crawler-cli.exe" "dist/dungeon-crawler-${arch}.exe"
+      echo " -> dist/dungeon-crawler-${arch}.exe (Windows PE)"
+
+    # Case 2: Linux / macOS target (No .exe suffix!)
+    elif [ -f "$target_dir/bin/dungeon-crawler-cli" ]; then
+      # Only add .exe if the architecture directory string explicitly contains "windows"
+      if [[ "$arch" == *"windows"* ]]; then
+        echo "⚠️ WARNING: $arch output is a Linux ELF binary inside! Skipping .exe extension."
+        cp "$target_dir/bin/dungeon-crawler-cli" "dist/dungeon-crawler-${arch}-linux-elf"
+      else
+        cp "$target_dir/bin/dungeon-crawler-cli" "dist/dungeon-crawler-${arch}"
+        echo " -> dist/dungeon-crawler-${arch} (Unix Binary)"
+      fi
+    fi
+  fi
 done
+
+echo "Done! Check your 'dist/' folder."

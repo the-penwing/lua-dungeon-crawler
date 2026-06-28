@@ -22,6 +22,8 @@ in
     pname = "dungeon-crawler-cli";
     version = "0.1.0";
 
+    inherit target;
+
     src = builtins.path {
       path = ./.;
       name = "dungeon-crawler-src";
@@ -31,6 +33,7 @@ in
       in
         base == "src" || base == "c-wrapper" || isInAllowedDir;
     };
+
     nativeBuildInputs = with pkgs; [
       zig
       lua5_5
@@ -38,6 +41,7 @@ in
       coreutils
       lunar-bundler
     ];
+
     buildPhase = ''
       runHook preBuild
 
@@ -51,7 +55,7 @@ in
       xxd -i dungeon-crawler.luac > dungeon-crawler.h
 
       ZIG_FLAGS="-O3 -s -fno-sanitize=undefined"
-      if [ -n "''${target-}" ]; then
+      if [ -n "$target" ]; then
         ZIG_FLAGS="$ZIG_FLAGS -target $target"
       fi
       if [[ "$target" == "x86-linux-musl" ]]; then
@@ -70,7 +74,8 @@ in
         LINK_FLAGS="-static -lm"
       fi
 
-      zig cc $ZIG_FLAGS -I ${luaStatic}/include -o "dungeon-crawler-cli${binarySuffix}" dungeon-crawler-cli.c ${luaStatic}/lib/liblua.a $LINK_FLAGS
+      # Link by passing the cached target object files directly to avoid fragile archive files
+      zig cc $ZIG_FLAGS -I ${luaStatic}/include dungeon-crawler-cli.c ${luaStatic}/lib/*.o $LINK_FLAGS -o "dungeon-crawler-cli${binarySuffix}"
 
       cd ..
       runHook postBuild
