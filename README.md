@@ -31,20 +31,20 @@ If you are using Nix, you don't need to manually clone, bundle, or compile anyth
 **Run Instantly Without Installation**
 
 ```bash
-nix run github:the-penwing/dungeonCrawler
+nix run github:the-penwing/lua-dungeon-crawler
 ```
 
 **Install to Profile**
 
 ```bash
-nix profile add github:the-penwing/dungeonCrawler
-dungeon-crawler
+nix profile add github:the-penwing/lua-dungeon-crawler
+dungeon-crawler-cli
 ```
 
 **Uninstall**
 
 ```bash
-nix profile remove dungeon-crawler
+nix profile remove dungeon-crawler-cli
 ```
 
 #### Using the Flake in Your System Configuration (Optional)
@@ -54,7 +54,7 @@ nix profile remove dungeon-crawler
 ```nix
 inputs = {
   nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  dungeon-crawler-cli.url = "github:the-penwing/dungeonCrawler";
+  dungeon-crawler-cli.url = "github:the-penwing/lua-dungeon-crawler";
 };
 ```
 
