@@ -73,6 +73,9 @@ in
       if [[ "$ZIG_FLAGS" == *"musl"* ]]; then
         LINK_FLAGS="-static -lm"
       fi
+      if [[ "$target" == "x86_64-macos" ]]; then
+        LINK_FLAGS="$LINK_FLAGS -Wl,-headerpad_max_install_names"
+      fi
 
       # Link by passing the cached target object files directly to avoid fragile archive files
       zig cc $ZIG_FLAGS -I ${luaStatic}/include dungeon-crawler-cli.c ${luaStatic}/lib/*.o $LINK_FLAGS -o "dungeon-crawler-cli${binarySuffix}"

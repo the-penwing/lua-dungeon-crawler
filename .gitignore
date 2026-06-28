@@ -24,6 +24,6 @@ bundles
 
 # Helper Scripts for Packaging
 dungeon-crawler.nsi
-create-macos-installer
+bundle-release
+create-macos-dmg
 create-windows-installer
-instructions.txt
