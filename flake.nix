@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     lunar-bundler-src.url = "github:colourlabs/lunar-bundler";
-    lunar-bundler-src.flaked = false;
+    lunar-bundler-src.flake = false;
   };
 
   outputs = {
@@ -22,8 +22,12 @@
           pname = "lunar-bundler";
           version = "git";
           src = lunar-bundler-src;
+
           cargoLock = {
             lockFile = "${lunar-bundler-src}/Cargo.lock";
+            outputHashes = {
+              "full_moon-3.0.0" = "sha256-fTsb3mGElqE9Ipx7Tiq/ZUQ5ORxbMyC8Lg03OiOtgkI=";
+            };
           };
         };
 

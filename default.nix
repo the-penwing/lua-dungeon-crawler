@@ -42,7 +42,7 @@ in
 
             cd .build
 
-            lunar-bundler src/main.lua dungeon-crawler.lua
+            lunar-bundler src/main.lua --output dungeon-crawler.lua
 
             luac -s -o dungeon-crawler.luac dungeon-crawler.lua
             xxd -i dungeon-crawler.luac > dungeon-crawler.h

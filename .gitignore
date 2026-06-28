@@ -10,3 +10,12 @@ c-wrapper/*.lua
 c-wrapper/*.luac
 c-wrapper/*.h
 c-wrapper/bin/
+
+# --- Nix & Cross-Compilation Additions ---
+
+# Local Nix build results and symlinks
+result
+result-*
+
+# In-tree temporary build artifact cache directory
+.build/

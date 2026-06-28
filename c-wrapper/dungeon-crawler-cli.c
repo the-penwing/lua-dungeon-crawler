@@ -1,4 +1,4 @@
-#include "dungeonCrawler.h"
+#include "dungeon-crawler.h"
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
@@ -9,8 +9,10 @@ int main() {
 
   luaL_openlibs(L);
 
-  int load_result = luaL_loadbuffer(L, (const char *)dungeonCrawler_luac,
-                                    dungeonCrawler_luac_len, "dungeonCrawler");
+  // Hyphens switched to underscores here:
+  int load_result =
+      luaL_loadbuffer(L, (const char *)dungeon_crawler_luac,
+                      dungeon_crawler_luac_len, "dungeon-crawler");
 
   if (load_result != 0) {
     printf("Error loading bytecode: %s\n", lua_tostring(L, -1));
