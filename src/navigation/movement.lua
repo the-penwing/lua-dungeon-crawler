@@ -2,15 +2,24 @@ local rooms = require('navigation.rooms')
 local gameState = require('game.gameState')
 local ui = require('ui')
 local combat = require('combat')
+
 local function nextRoom()
-  if rooms[gameState.player.currentRoom + 1] then
-    gameState.player.currentRoom = gameState.player.currentRoom + 1
-    local currentRoom = gameState.player.currentRoom
+  local targetRoomIndex = gameState.player.currentRoom + 1
+
+  -- Use loadRoom to dynamically spawn fresh enemies for the target room
+  local currentRoomData = rooms.loadRoom(targetRoomIndex)
+
+  if currentRoomData then
+    -- Safely update player position now that we verified the room exists
+    gameState.player.currentRoom = targetRoomIndex
+
     print('You move to the next room...')
     ui.display.displayRoomDescription()
-    if #rooms[currentRoom].enemies > 0 then
+
+    -- Check the freshly populated enemies table
+    if #currentRoomData.enemies > 0 then
       local success, result = pcall(function()
-        return combat.loop.combatLoop(rooms[gameState.player.currentRoom].enemies)
+        return combat.loop.combatLoop(currentRoomData.enemies)
       end)
       if not success then
         print('COMBAT ERROR: ' .. tostring(result))
@@ -27,14 +36,22 @@ local function nextRoom()
 end
 
 local function prevRoom()
-  if rooms[gameState.player.currentRoom - 1] then
-    gameState.player.currentRoom = gameState.player.currentRoom - 1
-    local currentRoom = gameState.player.currentRoom
+  local targetRoomIndex = gameState.player.currentRoom - 1
+
+  -- Use loadRoom to dynamically spawn fresh enemies for the target room
+  local currentRoomData = rooms.loadRoom(targetRoomIndex)
+
+  if currentRoomData then
+    -- Safely update player position now that we verified the room exists
+    gameState.player.currentRoom = targetRoomIndex
+
     print('You move back to the previous room...')
     ui.display.displayRoomDescription()
-    if #rooms[currentRoom].enemies > 0 then
+
+    -- Check the freshly populated enemies table
+    if #currentRoomData.enemies > 0 then
       local success, result = pcall(function()
-        return combat.loop.combatLoop(rooms[gameState.player.currentRoom].enemies)
+        return combat.loop.combatLoop(currentRoomData.enemies)
       end)
       if not success then
         print('COMBAT ERROR: ' .. tostring(result))

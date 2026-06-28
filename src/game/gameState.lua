@@ -1,4 +1,4 @@
-local rooms = require('navigation.rooms')
+local rooms = require('navigation.rooms').rooms
 
 local gameState = {
   player = {

@@ -27,20 +27,15 @@ local rooms = {
   },
   [2] = {
     description = 'A small square room.',
-    enemies = {
-      createEnemy(enemies.bat),
-      createEnemy(enemies.bat),
-      createEnemy(enemies.goblin),
-    },
+    enemyTemplates = { enemies.bat, enemies.bat, enemies.goblin },
+    enemies = {},
     loot = {},
     exits = { east = 3 },
   },
   [3] = {
     description = 'A medium-sized room.',
-    enemies = {
-      createEnemy(enemies.goblin),
-      createEnemy(enemies.skeleton),
-    },
+    enemyTemplates = { enemies.goblin, enemies.skeleton },
+    enemies = {},
     loot = {
       { name = 'healingpotion', quantity = 2 },
       { name = 'goldcoin', quantity = 5 },
@@ -49,9 +44,8 @@ local rooms = {
   },
   [4] = {
     description = 'A large room.',
-    enemies = {
-      createEnemy(enemies.dragon),
-    },
+    enemyTemplates = { enemies.dragon },
+    enemies = {},
     loot = {
       { name = 'healingpotion', quantity = 1 },
       { name = 'arrow', quantity = 15 },
@@ -60,4 +54,18 @@ local rooms = {
   },
 }
 
-return rooms
+local function loadRoom(roomNum)
+  local room = rooms[roomNum]
+  if room and room.enemyTemplates then
+    room.enemies = {}
+    for _, template in ipairs(room.enemyTemplates) do
+      table.insert(room.enemies, createEnemy(template))
+    end
+  end
+  return room
+end
+
+return {
+  rooms = rooms,
+  loadRoom = loadRoom,
+}

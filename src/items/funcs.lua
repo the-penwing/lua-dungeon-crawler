@@ -1,5 +1,7 @@
+local itemsData = require('items.data')
+
 local function getItemById(itemId)
-  for _, v in pairs(require('items.data')) do
+  for _, v in pairs(itemsData) do
     for _, itemData in pairs(v) do
       if itemData.id == itemId then
         return itemData

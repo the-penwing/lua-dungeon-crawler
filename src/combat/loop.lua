@@ -26,6 +26,8 @@ local function combatLoop(enemies)
     elseif choice == 4 then
       if actions.attemptFlee() then
         gameState.player.hp = math.ceil(gameState.player.hp * 1.5)
+
+        gameState.player.currentRoom = math.max(1, gameState.player.currentRoom - 1)
         return 'fled'
       end
       -- If flee fails, just continue to enemy turn

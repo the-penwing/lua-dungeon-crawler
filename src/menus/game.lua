@@ -1,6 +1,6 @@
 local ui = require('ui')
 local gameState = require('game.gameState')
-local rooms = require('navigation.rooms')
+local rooms = require('navigation.rooms').rooms
 local function gameMenu()
   local currentRoom = gameState.player.currentRoom
   local roomDescription = rooms[currentRoom].description

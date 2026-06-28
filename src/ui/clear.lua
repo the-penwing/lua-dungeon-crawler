@@ -1,9 +1,6 @@
 local function clear()
-  if os.getenv('OS') == 'Windows_NT' then
-    os.execute('cls')
-  else
-    os.execute('clear')
-  end
+  io.write('\27[2J\27[H')
+  io.flush()
 end
 
 return {
