@@ -65,7 +65,7 @@ local function choiceSpell(enemies)
           gameState.player.spellCooldown = true
           if target.health <= 0 then
             enemy_module.awardLoot(target)
-            table.remove(enemies, targetIndex)
+            enemy_module.handleEnemyDeath(targetIndex, enemies)
           end
           spellValid = true
         else

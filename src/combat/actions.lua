@@ -51,7 +51,7 @@ local function choiceAttack(enemies)
   playerAttack(target)
   if target.health <= 0 then
     enemy_module.awardLoot(target)
-    table.remove(enemies, targetIndex)
+    enemy_module.handleEnemyDeath(targetIndex, enemies)
   end
   return true
 end

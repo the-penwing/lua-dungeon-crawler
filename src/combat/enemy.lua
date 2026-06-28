@@ -28,7 +28,18 @@ local function enemyAttack(enemy)
     print('oh snap, that blow killed you.')
   end
 end
+local function handleEnemyDeath(enemyIndex, enemyList)
+  local enemy = enemyList[enemyIndex]
 
+  print(enemy.name .. ' was slain!')
+
+  -- check if enemy is the boss
+  if enemy.id == 'dragon' then
+    gameState.bossBeat = true
+    print('\nCongratualtions adventurer you have slain the Dragon!')
+  end
+  table.remove(enemyList, enemyIndex)
+end
 local function awardLoot(enemy)
   if #enemy.loot > 0 then
     print('\n' .. enemy.name .. ' dropped:')
@@ -65,5 +76,6 @@ end
 
 return {
   enemyAttack = enemyAttack,
+  handleEnemyDeath = handleEnemyDeath,
   awardLoot = awardLoot,
 }
