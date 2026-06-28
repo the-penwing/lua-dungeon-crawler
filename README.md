@@ -31,13 +31,13 @@ If you are using Nix, you don't need to manually clone, bundle, or compile anyth
 **Run Instantly Without Installation**
 
 ```bash
-nix run github:benvl/dungeonCrawler
+nix run github:the-penwing/dungeonCrawler
 ```
 
 **Install to Profile**
 
 ```bash
-nix profile add github:benvl/dungeonCrawler
+nix profile add github:the-penwing/dungeonCrawler
 dungeon-crawler
 ```
 
@@ -54,7 +54,7 @@ nix profile remove dungeon-crawler
 ```nix
 inputs = {
   nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  dungeon-crawler-cli.url = "github:benvl/dungeonCrawler";
+  dungeon-crawler-cli.url = "github:the-penwing/dungeonCrawler";
 };
 ```
 
