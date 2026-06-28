@@ -36,11 +36,13 @@
           if envSdkRoot != ""
           then envSdkRoot
           else null;
-
-        makeTarget = target: sdk:
+        makeTarget = target: sdk: let
+          luaStatic = pkgs.callPackage ./lua-static.nix {inherit target;};
+        in
           pkgs.callPackage ./default.nix {
             inherit target;
             inherit lunar-bundler;
+            inherit luaStatic;
             sdkRoot = sdk;
           };
       in {

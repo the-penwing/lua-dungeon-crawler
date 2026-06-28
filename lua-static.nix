@@ -1,0 +1,58 @@
+{
+  pkgs,
+  lib,
+  stdenv,
+  target ? null,
+}: let
+  targetName =
+    if target != null
+    then target
+    else stdenv.hostPlatform.config;
+in
+  stdenv.mkDerivation {
+    pname = "lua-static-${targetName}";
+    version = "5.5-static";
+
+    src = pkgs.lua5_5.src;
+    nativeBuildInputs = with pkgs; [zig gnumake coreutils];
+
+    dontUnpack = true;
+
+    buildPhase = ''
+      mkdir -p lua-source
+      tar -xf $src --strip-components=1 -C lua-source
+
+      cd lua-source/src
+
+      ZIG_FLAGS="-O3 -s -fno-sanitize=undefined"
+      if [ -n "''${target-}" ]; then
+        ZIG_FLAGS="$ZIG_FLAGS -target $target"
+      fi
+      if [[ "$target" == "x86-linux-musl" ]]; then
+        ZIG_FLAGS="$ZIG_FLAGS -mcpu=i686"
+      fi
+
+      cat << 'EOF' > Makefile
+      SRCS = lapi.c lcode.c lctype.c ldebug.c ldo.c ldump.c lfunc.c lgc.c llex.c \
+             lmem.c lobject.c lopcodes.c lparser.c lstate.c lstring.c ltable.c ltm.c \
+             lundump.c lvm.c lzio.c lauxlib.c lbaselib.c lcorolib.c ldblib.c liolib.c \
+             lmathlib.c loadlib.c loslib.c lstrlib.c ltablib.c lutf8lib.c linit.c
+      OBJS = $(SRCS:.c=.o)
+      all: liblua.a
+      %.o: %.c
+      	zig cc $(ZIG_FLAGS) -c $< -o $@
+      liblua.a: $(OBJS)
+      	zig ar rcs liblua.a $(OBJS)
+      EOF
+
+      export ZIG_FLAGS
+
+      make -j8
+    '';
+
+    installPhase = ''
+      mkdir -p $out/lib $out/include
+      cp liblua.a $out/lib/
+      cp *.h $out/include/
+    '';
+  }
