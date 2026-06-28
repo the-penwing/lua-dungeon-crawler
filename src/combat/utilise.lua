@@ -66,7 +66,8 @@ local function choiceItem()
   print((#consumables + 1) .. ') return to action menu')
 
   -- Get item choice
-  io.write('Item (1-' .. (#consumables + 1) .. '): ')
+  io.write('\nItem (1-' .. (#consumables + 1) .. '): ')
+  io.flush()
   local choice = tonumber(io.read('*l'))
   if choice == #consumables + 1 then
     print('returning to action menu.')

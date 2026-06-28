@@ -55,7 +55,8 @@ local function switchWeapon()
   end
   print('  ' .. (#weaponsInInventory + 1) .. ') return to game menu')
   -- get item choice
-  io.write('choice (1-' .. (#weaponsInInventory + 1) .. '): ')
+  io.write('\nchoice (1-' .. (#weaponsInInventory + 1) .. '): ')
+  io.flush()
   local choice = tonumber(io.read('*l'))
   if choice == #weaponsInInventory + 1 then
     print('returning to game menu.')

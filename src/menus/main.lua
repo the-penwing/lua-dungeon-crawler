@@ -8,7 +8,8 @@ local function mainMenu()
     print('\n  1) new game')
     print('  2) load game')
     print('  3) exit')
-    io.write('choice (1-3): ')
+    io.write('\nchoice (1-3): ')
+    io.flush()
     choice = tonumber(io.read('*l'))
     if choice == 1 or choice == 2 or choice == 3 then
       validChoice = true

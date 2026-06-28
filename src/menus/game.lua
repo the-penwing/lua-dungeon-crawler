@@ -17,7 +17,8 @@ local function gameMenu()
   local validChoice = false
   local choice
   repeat
-    io.write('Enter choice (1-6): ')
+    io.write('\nEnter choice (1-6): ')
+    io.flush()
     choice = tonumber(io.read('*l'))
     if choice and choice >= 1 and choice <= 6 then
       validChoice = true

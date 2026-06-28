@@ -8,7 +8,8 @@ local function selectTarget(enemies)
     print((#enemies + 1) .. ') return to action menu')
 
     -- Get target choice
-    io.write('Target (1-' .. #enemies + 1 .. '): ')
+    io.write('\nTarget (1-' .. #enemies + 1 .. '): ')
+    io.flush()
     local targetIndex = tonumber(io.read('*l'))
 
     -- Validate

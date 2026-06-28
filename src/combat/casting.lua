@@ -50,7 +50,8 @@ local function choiceSpell(enemies)
       print('  ' .. magic.healing_whisper.description)
       print('\n3) return to action menu')
 
-      io.write('spell (1-3): ')
+      io.write('\nspell (1-3): ')
+      io.flush()
       local spellChoice = tonumber(io.read('*l'))
 
       if spellChoice == 1 then
