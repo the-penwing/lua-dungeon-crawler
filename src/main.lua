@@ -1,13 +1,10 @@
-local gameState = require('game.gameState')
 local function mainLoop()
   while true do
     local choice = require('menus').main.mainMenu() -- Returns: 1 (new), 2 (load), 3 (exit)
 
     if choice == 2 then
-      local playerState = require('game.save').loadGame('save.json')
-      if playerState then
-        gameState.player = playerState
-      else
+      -- loadGame already mutates and updates the internal gameState table safely
+      if not require('game.save').loadGame('save.json') then
         print('Error: Failed to load save file!')
       end
     end
