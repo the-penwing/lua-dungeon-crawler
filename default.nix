@@ -24,6 +24,12 @@ in
 
       src = ./.;
 
+      meta = {
+        description = "A WIP CLI Dungeon Crawler written in Lua and bundled into a performant C binary";
+        homepage = "https://github.com/the-penwing/lua-dungeon-crawler";
+        license = lib.licenses.mit;
+      };
+
       nativeBuildInputs = with pkgs; [
         zig
         lua5_5
