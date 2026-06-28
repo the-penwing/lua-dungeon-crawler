@@ -18,6 +18,7 @@ result
 result-*
 dist
 bundles
+release-artifacts/**
 .env
 # In-tree temporary build artifact cache directory
 .build/
