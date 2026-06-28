@@ -16,6 +16,14 @@ c-wrapper/bin/
 # Local Nix build results and symlinks
 result
 result-*
-
+dist
+bundles
+.env
 # In-tree temporary build artifact cache directory
 .build/
+
+# Helper Scripts for Packaging
+dungeon-crawler.nsi
+create-macos-installer
+create-windows-installer
+instructions.txt
