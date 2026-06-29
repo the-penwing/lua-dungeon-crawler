@@ -100,8 +100,11 @@ local function loadGame(filename)
       end
       p.inventory = sanitizedInventory
 
-      if not itemFuncs.getItemById(p.equippedWeapon) then
-        p.equippedWeapon = 'rustysword'
+      if not p.activeEquipment then
+        p.activeEquipment = { weapon = 'rustysword', armor = 'none' }
+      end
+      if not itemFuncs.getItemById(p.activeEquipment.weapon) then
+        p.activeEquipment.weapon = 'rustysword'
       end
 
       -- Apply values directly to the active state table

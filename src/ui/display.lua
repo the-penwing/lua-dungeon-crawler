@@ -2,12 +2,16 @@ local formatting = require('ui.formatting')
 local itemFuncs = require('items.funcs')
 local gameState = require('game.gameState')
 
+local equippedWeapon = itemFuncs.getItemById(gameState.player.activeEquipment.weapon)
+local equippedArmor = itemFuncs.getItemById(gameState.player.activeEquipment.armor)
+
 local function displayGameState()
   print('Player Stats:')
   if gameState.player.hp > 0 then
     print('  Health: ' .. gameState.player.hp .. '/' .. gameState.player.maxHP)
     print('  MP: ' .. gameState.player.mp .. '/' .. gameState.player.maxMP)
-    print('  Equipped Weapon: ' .. itemFuncs.getItemById(gameState.player.equippedWeapon).name)
+    print('  Equipped Weapon: ' .. (equippedWeapon and equippedWeapon.name or 'None'))
+    print('  Equipped Armor: ' .. (equippedArmor and equippedArmor.name or 'None'))
     print('  Inventory: ' .. formatting.formatInventory(gameState.player.inventory))
   else
     print('You have died')
@@ -37,7 +41,8 @@ local function displayCombatState(enemies)
   print('Player Stats:')
   print('  Health: ' .. gameState.player.hp .. '/' .. gameState.player.maxHP)
   print('  MP: ' .. gameState.player.mp .. '/' .. gameState.player.maxMP)
-  print('  Equipped Weapon: ' .. itemFuncs.getItemById(gameState.player.equippedWeapon).name)
+  print('  Equipped Weapon: ' .. (equippedWeapon and equippedWeapon.name or 'None'))
+  print('  Equipped Armor: ' .. (equippedArmor and equippedArmor.name or 'None'))
   displayEnemies(enemies)
 end
 

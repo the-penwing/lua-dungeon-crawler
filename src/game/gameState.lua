@@ -9,7 +9,10 @@ local gameState = {
     maxMP = 20,
     spellCooldown = false,
     currentRoom = 1,
-    equippedWeapon = 'rustysword',
+    activeEquipment = {
+      weapon = 'rustysword',
+      armor = 'none',
+    },
     inventory = {
       { id = 'rustysword', quantity = 1 },
       { id = 'healingpotion', quantity = 1 },

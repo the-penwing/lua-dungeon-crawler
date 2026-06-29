@@ -25,7 +25,7 @@ local function getPlayerAction()
 end
 
 local function playerAttack(enemy)
-  local weapon = items.funcs.getItemById(gameState.player.equippedWeapon)
+  local weapon = items.funcs.getItemById(gameState.player.activeEquipment.weapon)
   if not weapon then
     print('error: equipped weapon not found!!')
     return
