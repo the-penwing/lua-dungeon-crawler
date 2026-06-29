@@ -5,16 +5,14 @@ local rooms = roomsModule.rooms
 local function gameMenu()
   local currentRoom = gameState.player.currentRoom
   local roomDescription = rooms[currentRoom].description
-  print('--- Room ' .. currentRoom .. ': ' .. roomDescription .. ' ---')
-  print()
+  print('\n--- Room ' .. currentRoom .. ': ' .. roomDescription .. ' ---\n')
   ui.display.displayGameState()
   print('\nGame Menu:')
   print('  1) Use Item')
   print('  2) Switch Weapon')
-  print('  3) Next Room')
-  print('  4) Prev. Room')
-  print('  5) Rest')
-  print('  6) Save and Main Menu')
+  print('  3) Move')
+  print('  4) Rest')
+  print('  5) Save and Main Menu')
   local validChoice = false
   local choice
   repeat

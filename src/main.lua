@@ -26,14 +26,11 @@ local function mainLoop()
         require('items.funcs').switchWeapon()
       elseif gameMenuChoice == 3 then
         -- next room
-        require('navigation.movement').nextRoom()
+        require('navigation.movement').navMenu()
       elseif gameMenuChoice == 4 then
-        -- previous room
-        require('navigation.movement').prevRoom()
-      elseif gameMenuChoice == 5 then
         -- rest
         require('game.rest').rest()
-      elseif gameMenuChoice == 6 then
+      elseif gameMenuChoice == 5 then
         -- save and main menu
         require('game.save').saveGame('save.json')
         break
