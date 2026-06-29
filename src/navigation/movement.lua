@@ -33,7 +33,6 @@ local function moveDirection(direction)
       print('Location: ' .. targetRoomData.name)
     end
 
-    -- Trigger combat if the room isn't cleared and has live enemies
     if not targetRoomData.isCleared and #targetRoomData.enemies > 0 then
       local success, result = pcall(function()
         return combat.loop.combatLoop(targetRoomData.enemies)
@@ -44,8 +43,7 @@ local function moveDirection(direction)
         return false
       end
 
-      -- If combat concludes successfully, mark room cleared
-      if result == true then
+      if result == true and result ~= 'fled' then
         targetRoomData.isCleared = true
       end
       return result

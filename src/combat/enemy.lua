@@ -1,4 +1,5 @@
 local gameState = require('game.gameState')
+
 local function enemyAttack(enemy)
   if math.random(1, 100) <= enemy.hitChance then
     local damage
@@ -18,9 +19,8 @@ local function enemyAttack(enemy)
     print(enemy.name .. "'s attack missed!")
   end
 
-  -- Increment dragon's attack cycle (whether hit or miss)
   if enemy.name == 'Dragon' then
-    enemy.attackPhase = (enemy.attackPhase + 1) % 4 -- Cycles 0,1,2,3,0,1,2,3...
+    enemy.attackPhase = (enemy.attackPhase + 1) % 4
   end
 
   if gameState.player.hp <= 0 then
@@ -28,20 +28,21 @@ local function enemyAttack(enemy)
     print('oh snap, that blow killed you.')
   end
 end
+
 local function handleEnemyDeath(enemyIndex, enemyList)
   local enemy = enemyList[enemyIndex]
-
   print(enemy.name .. ' was slain!')
 
-  -- check if enemy is the boss
-  if enemy.id == 'dragon' then
+  -- Matches both generated 'dragon' IDs and fallback conditions
+  if enemy.id == 'dragon' or enemy.name == 'Dragon' then
     gameState.bossBeat = true
-    print('\nCongratualtions adventurer you have slain the Dragon!')
+    print('\nCongratulations adventurer you have slain the Dragon!')
   end
   table.remove(enemyList, enemyIndex)
 end
+
 local function awardLoot(enemy)
-  if #enemy.loot > 0 then
+  if enemy.loot and #enemy.loot > 0 then
     print('\n' .. enemy.name .. ' dropped:')
     for _, lootItem in ipairs(enemy.loot) do
       local itemData = require('items.funcs').getItemById(lootItem.id)
@@ -49,23 +50,20 @@ local function awardLoot(enemy)
       if itemData then
         print('  - ' .. itemData.name .. ' (x' .. lootItem.quantity .. ')')
 
-        -- Check if item already in inventory
         local found = false
         for _, invItem in ipairs(gameState.player.inventory) do
-          if invItem.id == lootItem.id then -- Change .name to .id
-            -- Item exists, add quantity
+          if invItem.id == lootItem.id then
             invItem.quantity = invItem.quantity + lootItem.quantity
             found = true
             break
           end
         end
 
-        -- If not found, add new item
         if not found then
           table.insert(
             gameState.player.inventory,
             { id = lootItem.id, quantity = lootItem.quantity }
-          ) -- Change .name to .id
+          )
         end
       else
         print('error: loot item "' .. lootItem.id .. '" not found in the items table!')

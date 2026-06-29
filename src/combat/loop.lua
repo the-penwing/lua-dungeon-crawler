@@ -10,14 +10,11 @@ end
 
 local function combatLoop(enemies)
   while #enemies > 0 and gameState.player.hp > 0 do
-    -- 1. Display state and clear spell cooldown
     require('ui.display').displayCombatState(enemies)
 
-    -- 2. Get player action (1-4)
     local choice = actions.getPlayerAction()
     local actionFinished = false
 
-    -- 3. Execute action based on choice
     if choice == 1 then
       actionFinished = actions.choiceAttack(enemies)
     elseif choice == 2 then
@@ -26,19 +23,17 @@ local function combatLoop(enemies)
       actionFinished = utilise.choiceItem()
     elseif choice == 4 then
       if actions.attemptFlee() then
-        gameState.player.hp = math.ceil(gameState.player.hp * 1.5)
+        local penalty = math.floor(gameState.player.hp * 0.20)
+        gameState.player.hp = math.max(1, gameState.player.hp - penalty)
+        print('You escaped with your life but lost ' .. penalty .. ' HP running away!')
 
-        -- Boot the player back to the starting safe room on a successful flee
         gameState.player.roomCoordinates = { x = 1, y = 1 }
         return 'fled'
       end
-      -- If flee fails, just continue to enemy turn
     end
 
-    -- 4. Enemy turn (if enemies remain and action completed)
     if actionFinished then
       for _, enemy in ipairs(enemies) do
-        -- Check that the enemy is alive before letting it attack
         if enemy.hp > 0 then
           enemy_module.enemyAttack(enemy)
         end
@@ -49,11 +44,9 @@ local function combatLoop(enemies)
       gameState.player.spellCooldown = false
     end
 
-    -- Regen MP every turn
     regenMP()
   end
 
-  -- After loop: check result
   if gameState.player.hp <= 0 then
     return false
   else

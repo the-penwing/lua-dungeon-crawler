@@ -1,12 +1,10 @@
 -- src/navigation/generator.lua
+-- Replace your current navigation.generator module definition with this corrected version:
 local gameState = require('game.gameState')
--- 1. Import your real database assets
 local enemyDb = require('game.enemies')
 
--- Pool of standard spawn keys (saving 'dragon' out for a boss later)
 local enemyPool = { 'bat', 'goblin', 'skeleton' }
 
--- Standard room loose loot table pool matching your official IDs
 local lootPool = {
   { id = 'healingpotion', chance = 40, maxQty = 2 },
   { id = 'arrow', chance = 50, maxQty = 5 },
@@ -31,7 +29,7 @@ local function generateDungeon()
 
   local dungeonMap = {}
 
-  -- Starting room (Hardcoded safe zone)
+  -- Starting safe zone room
   dungeonMap['1,1'] = {
     name = 'Starting Room',
     isCleared = true,
@@ -56,34 +54,51 @@ local function generateDungeon()
     local targetKey = tx .. ',' .. ty
 
     if not dungeonMap[targetKey] then
-      -- 2. Build live monsters from your real enemy definitions
       local spawnedEnemies = {}
-      if math.random(1, 100) <= 75 then
-        local enemyId = enemyPool[math.random(1, #enemyPool)]
-        local enemyTemplate = enemyDb[enemyId]
-
-        -- Deep copy matching your exact combat properties!
-        table.insert(spawnedEnemies, {
-          id = enemyId,
-          name = enemyTemplate.name,
-          hp = enemyTemplate.maxHealth,
-          maxHealth = enemyTemplate.maxHealth,
-          damage = enemyTemplate.damage,
-          hitChance = enemyTemplate.hitChance,
-          loot = enemyTemplate.loot,
-        })
-      end
-
       local spawnedLoot = {}
-      for _, item in ipairs(lootPool) do
-        if math.random(1, 100) <= item.chance then
-          local qty = math.random(1, item.maxQty)
-          table.insert(spawnedLoot, { id = item.id, quantity = qty })
+      local roomName = 'Dark Chamber'
+
+      -- If this is the final room being generated, make it the Boss Lair!
+      if roomsPlaced == totalRooms - 1 then
+        roomName = "The Dragon's Lair"
+        table.insert(spawnedEnemies, {
+          id = 'dragon', -- Added explicit ID for tracking
+          name = enemyDb.dragon.name,
+          hp = enemyDb.dragon.maxHealth,
+          maxHealth = enemyDb.dragon.maxHealth,
+          damage = enemyDb.dragon.damage, -- This is a table {small=5, big=15}
+          hitChance = enemyDb.dragon.hitChance,
+          loot = enemyDb.dragon.loot,
+          attackPhase = 0, -- Needed for special combat mechanics
+        })
+      else
+        -- Regular mob spawn logic
+        if math.random(1, 100) <= 75 then
+          local enemyId = enemyPool[math.random(1, #enemyPool)]
+          local enemyTemplate = enemyDb[enemyId]
+
+          table.insert(spawnedEnemies, {
+            id = enemyId,
+            name = enemyTemplate.name,
+            hp = enemyTemplate.maxHealth,
+            maxHealth = enemyTemplate.maxHealth,
+            damage = enemyTemplate.damage,
+            hitChance = enemyTemplate.hitChance,
+            loot = enemyTemplate.loot,
+          })
+        end
+
+        -- Regular loot generation logic using lootPool
+        for _, item in ipairs(lootPool) do
+          if math.random(1, 100) <= item.chance then
+            local qty = math.random(1, item.maxQty)
+            table.insert(spawnedLoot, { id = item.id, quantity = qty })
+          end
         end
       end
 
       dungeonMap[targetKey] = {
-        name = 'Dark Chamber',
+        name = roomName,
         isCleared = (#spawnedEnemies == 0),
         enemies = spawnedEnemies,
         loot = spawnedLoot,
