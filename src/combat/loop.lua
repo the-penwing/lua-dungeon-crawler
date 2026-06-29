@@ -33,7 +33,8 @@ local function combatLoop(enemies)
     end
 
     if actionFinished then
-      for _, enemy in ipairs(enemies) do
+      for i = #enemies, 1, -1 do
+        local enemy = enemies[i]
         if enemy.hp > 0 then
           enemy_module.enemyAttack(enemy)
         end
