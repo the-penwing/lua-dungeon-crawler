@@ -1,11 +1,9 @@
 local gameState = require('game.gameState')
 local function rest()
-  -- heal 10% current hp
-  gameState.player.hp =
-    math.min(math.floor(gameState.player.hp * (1 + 10 / 100)), gameState.player.maxHP)
-  -- regen 5% of current mp
-  gameState.player.mp =
-    math.min(math.floor(gameState.player.mp * (1 + 5 / 100)), gameState.player.maxMP)
+  local hpHealAmt = math.floor(gameState.player.maxHP * 0.10)
+  local mpRegenAmt = math.floor(gameState.player.maxMP * 0.05)
+  gameState.player.hp = math.min(gameState.player.hp + hpHealAmt, gameState.player.maxHP)
+  gameState.player.mp = math.min(gameState.player.mp + mpRegenAmt, gameState.player.maxMP)
   -- display the results
   print(
     'resting restored your HP to: '
