@@ -1,6 +1,3 @@
-local roomsModule = require('navigation.rooms')
-local rooms = roomsModule.rooms
-
 local gameState = {
   player = {
     hp = 100,

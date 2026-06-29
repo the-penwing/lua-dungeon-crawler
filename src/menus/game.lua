@@ -1,7 +1,5 @@
 local ui = require('ui')
 local gameState = require('game.gameState')
-local roomsModule = require('navigation.rooms')
-local rooms = roomsModule.rooms
 local function gameMenu()
   local coords = gameState.player.roomCoordinates
   local currentKey = coords.x .. ',' .. coords.y

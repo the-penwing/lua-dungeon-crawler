@@ -1,5 +1,4 @@
 -- src/navigation/loot.lua
-local rooms = require('navigation.rooms')
 local gameState = require('game.gameState')
 local itemFuncs = require('items.funcs')
 
