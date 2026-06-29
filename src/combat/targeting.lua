@@ -3,7 +3,7 @@ local function selectTarget(enemies)
     -- Display enemies
     print('Choose target:')
     for i, enemy in ipairs(enemies) do
-      print(i .. ') ' .. enemy.name .. ' (' .. enemy.health .. '/' .. enemy.maxHealth .. ')')
+      print(i .. ') ' .. enemy.name .. ' (' .. enemy.hp .. '/' .. enemy.maxHealth .. ')')
     end
     print((#enemies + 1) .. ') return to action menu')
 

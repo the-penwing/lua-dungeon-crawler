@@ -35,7 +35,7 @@ local function playerAttack(enemy)
   local hitChance = weapon.hitChance
 
   if math.random(1, 100) <= hitChance then
-    enemy.health = enemy.health - damage
+    enemy.hp = enemy.hp - damage
     print('You hit ' .. enemy.name .. ' for ' .. damage .. ' damage!')
   else
     print('Attack Missed!!')
@@ -49,7 +49,7 @@ local function choiceAttack(enemies)
     return false
   end
   playerAttack(target)
-  if target.health <= 0 then
+  if target.hp <= 0 then
     enemy_module.awardLoot(target)
     enemy_module.handleEnemyDeath(targetIndex, enemies)
   end

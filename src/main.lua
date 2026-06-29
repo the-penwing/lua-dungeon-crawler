@@ -5,6 +5,7 @@ local itemFuncs = require('items.funcs')
 local menus = require('menus')
 local navigation = require('navigation')
 local generator = require('navigation.generator')
+local mapVisualiser = require('ui.map')
 local function mainLoop()
   while true do
     local choice = menus.main.mainMenu()
@@ -36,8 +37,10 @@ local function mainLoop()
         elseif gameMenuChoice == 4 then
           navigation.loot.searchRoom()
         elseif gameMenuChoice == 5 then
-          game.rest.rest()
+          mapVisualiser.renderMinimap()
         elseif gameMenuChoice == 6 then
+          game.rest.rest()
+        elseif gameMenuChoice == 7 then
           game.save.saveGame('save.json')
           break
         end

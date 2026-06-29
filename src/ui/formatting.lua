@@ -11,7 +11,7 @@ end
 local function formatEnemies(enemies)
   local opponents = {}
   for _, opponent in ipairs(enemies) do
-    table.insert(opponents, opponent.name .. ' ' .. opponent.health .. '/' .. opponent.maxHealth)
+    table.insert(opponents, opponent.name .. ' ' .. opponent.hp .. '/' .. opponent.maxHealth)
   end
   return table.concat(opponents, '\n')
 end

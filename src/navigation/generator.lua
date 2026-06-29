@@ -1,5 +1,3 @@
--- src/navigation/generator.lua
--- Replace your current navigation.generator module definition with this corrected version:
 local gameState = require('game.gameState')
 local enemyDb = require('game.enemies')
 
@@ -12,24 +10,7 @@ local lootPool = {
 }
 
 local function generateDungeon()
-  local restoreSeed = math.random(1, 1000000)
-  math.randomseed(gameState.dungeonSeed)
-
-  local cx, cy = 1, 1
-  local roomsPlaced = 1
-  local totalRooms = 6
-
-  local directions = { [1] = 'north', [2] = 'south', [3] = 'east', [4] = 'west' }
-  local directionsData = {
-    north = { dx = 0, dy = 1, opposite = 'south' },
-    south = { dx = 0, dy = -1, opposite = 'north' },
-    east = { dx = 1, dy = 0, opposite = 'west' },
-    west = { dx = -1, dy = 0, opposite = 'east' },
-  }
-
   local dungeonMap = {}
-
-  -- Starting safe zone room
   dungeonMap['1,1'] = {
     name = 'Starting Room',
     isCleared = true,
@@ -42,41 +23,56 @@ local function generateDungeon()
     },
     exits = {},
   }
+  local cx, cy = 1, 1
+  local history = { { x = 1, y = 1 } }
+  local roomsPlaced = 1
+  local totalRooms = 10
+  local directionsData = {
+    north = { dx = 0, dy = 1, opposite = 'south' },
+    south = { dx = 0, dy = -1, opposite = 'north' },
+    east = { dx = 1, dy = 0, opposite = 'west' },
+    west = { dx = -1, dy = 0, opposite = 'east' },
+  }
+  local dirKeys = { 'north', 'south', 'east', 'west' }
 
   while roomsPlaced < totalRooms do
-    local randomDirection = math.random(1, 4)
-    local dirString = directions[randomDirection]
-    local info = directionsData[dirString]
-
-    local tx = cx + info.dx
-    local ty = cy + info.dy
     local currentKey = cx .. ',' .. cy
-    local targetKey = tx .. ',' .. ty
+    local validExits = {}
 
-    if not dungeonMap[targetKey] then
+    for _, dir in ipairs(dirKeys) do
+      local info = directionsData[dir]
+      local tx = cx + info.dx
+      local ty = cy + info.dy
+      local targetKey = tx .. ',' .. ty
+
+      if not dungeonMap[targetKey] then
+        table.insert(validExits, { dir = dir, x = tx, y = ty, key = targetKey })
+      end
+    end
+
+    if #validExits > 0 then
+      local choice = validExits[math.random(1, #validExits)]
+
       local spawnedEnemies = {}
       local spawnedLoot = {}
       local roomName = 'Dark Chamber'
 
-      -- If this is the final room being generated, make it the Boss Lair!
       if roomsPlaced == totalRooms - 1 then
         roomName = "The Dragon's Lair"
         table.insert(spawnedEnemies, {
-          id = 'dragon', -- Added explicit ID for tracking
+          id = 'dragon',
           name = enemyDb.dragon.name,
           hp = enemyDb.dragon.maxHealth,
           maxHealth = enemyDb.dragon.maxHealth,
-          damage = enemyDb.dragon.damage, -- This is a table {small=5, big=15}
+          damage = enemyDb.dragon.damage,
           hitChance = enemyDb.dragon.hitChance,
           loot = enemyDb.dragon.loot,
-          attackPhase = 0, -- Needed for special combat mechanics
+          attackPhase = 0,
         })
       else
-        -- Regular mob spawn logic
         if math.random(1, 100) <= 75 then
           local enemyId = enemyPool[math.random(1, #enemyPool)]
           local enemyTemplate = enemyDb[enemyId]
-
           table.insert(spawnedEnemies, {
             id = enemyId,
             name = enemyTemplate.name,
@@ -88,7 +84,6 @@ local function generateDungeon()
           })
         end
 
-        -- Regular loot generation logic using lootPool
         for _, item in ipairs(lootPool) do
           if math.random(1, 100) <= item.chance then
             local qty = math.random(1, item.maxQty)
@@ -97,24 +92,33 @@ local function generateDungeon()
         end
       end
 
-      dungeonMap[targetKey] = {
+      dungeonMap[choice.key] = {
         name = roomName,
         isCleared = (#spawnedEnemies == 0),
         enemies = spawnedEnemies,
         loot = spawnedLoot,
         exits = {},
       }
-      roomsPlaced = roomsPlaced + 1
 
-      dungeonMap[currentKey].exits[dirString] = targetKey
-      local oppString = info.opposite
-      dungeonMap[targetKey].exits[oppString] = currentKey
+      dungeonMap[currentKey].exits[choice.dir] = choice.key
+      dungeonMap[choice.key].exits[directionsData[choice.dir].opposite] = currentKey
+
+      cx = choice.x
+      cy = choice.y
+      table.insert(history, { x = cx, y = cy })
+      roomsPlaced = roomsPlaced + 1
+    else
+      if #history > 1 then
+        table.remove(history)
+        local backtrackNode = history[#history]
+        cx = backtrackNode.x
+        cy = backtrackNode.y
+      else
+        break
+      end
     end
-    cx = tx
-    cy = ty
   end
 
-  math.randomseed(restoreSeed)
   gameState.dungeonMap = dungeonMap
 end
 

@@ -30,6 +30,7 @@ end
 local function saveGame(filename)
   local saveData = {
     player = gameState.player,
+    bossBeat = gameState.bossBeat,
     dungeonSeed = gameState.dungeonSeed,
     dungeonMap = gameState.dungeonMap,
   }
@@ -116,6 +117,7 @@ local function loadGame(filename)
       gameState.player = p
 
       -- Fully restore your seed and procedural layout state
+      gameState.bossBeat = decodedData.bossBeat or false
       gameState.dungeonSeed = decodedData.dungeonSeed or 69
       gameState.dungeonMap = decodedData.dungeonMap or {}
     end

@@ -14,9 +14,9 @@ local gameState = {
       { id = 'rustysword', quantity = 1 },
       { id = 'healingpotion', quantity = 1 },
     },
-    bossBeat = false,
     playerAlive = true,
   },
+  bossBeat = false,
   dungeonSeed = 69, -- Store Raw integer Seed for Dungeon Generation
   dungeonMap = {}, -- Auto Generated Dungeon Based on Seed
 }
