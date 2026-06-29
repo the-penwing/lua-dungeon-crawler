@@ -2,10 +2,9 @@ local formatting = require('ui.formatting')
 local itemFuncs = require('items.funcs')
 local gameState = require('game.gameState')
 
-local equippedWeapon = itemFuncs.getItemById(gameState.player.activeEquipment.weapon)
-local equippedArmor = itemFuncs.getItemById(gameState.player.activeEquipment.armor)
-
 local function displayGameState()
+  local equippedWeapon = itemFuncs.getItemById(gameState.player.activeEquipment.weapon)
+  local equippedArmor = itemFuncs.getItemById(gameState.player.activeEquipment.armor)
   print('Player Stats:')
   if gameState.player.hp > 0 then
     print('  Health: ' .. gameState.player.hp .. '/' .. gameState.player.maxHP)
@@ -40,6 +39,8 @@ local function displayEnemies(enemies)
 end
 
 local function displayCombatState(enemies)
+  local equippedWeapon = itemFuncs.getItemById(gameState.player.activeEquipment.weapon)
+  local equippedArmor = itemFuncs.getItemById(gameState.player.activeEquipment.armor)
   print('Player Stats:')
   print('  Health: ' .. gameState.player.hp .. '/' .. gameState.player.maxHP)
   print('  MP: ' .. gameState.player.mp .. '/' .. gameState.player.maxMP)
