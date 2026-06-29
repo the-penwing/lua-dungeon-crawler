@@ -30,8 +30,8 @@ end
 local function saveGame(filename)
   local saveData = {
     player = gameState.player,
-    bossBeat = gameState.bossBeat,
-    playerAlive = gameState.playerAlive,
+    dungeonSeed = gameState.dungeonSeed,
+    dungeonMap = gameState.dungeonMap,
   }
 
   local encodedData = json.encode(saveData)
@@ -76,8 +76,13 @@ local function loadGame(filename)
       p.hp = math.min(tonumber(p.hp) or p.maxHP, p.maxHP)
       p.mp = math.min(tonumber(p.mp) or p.maxMP, p.maxMP)
 
-      if p.currentRoom and (p.currentRoom < 1 or p.currentRoom > 4) then
-        p.currentRoom = 1
+      -- Verify player coordinate tracking structure instead of flat room indexes
+      if
+        not p.roomCoordinates
+        or type(p.roomCoordinates.x) ~= 'number'
+        or type(p.roomCoordinates.y) ~= 'number'
+      then
+        p.roomCoordinates = { x = 1, y = 1 }
       end
 
       -- Verify items exist and clip unearned stack limits
@@ -109,8 +114,10 @@ local function loadGame(filename)
 
       -- Apply values directly to the active state table
       gameState.player = p
-      gameState.bossBeat = decodedData.bossBeat or false
-      gameState.playerAlive = decodedData.playerAlive ~= false
+
+      -- Fully restore your seed and procedural layout state
+      gameState.dungeonSeed = decodedData.dungeonSeed or 69
+      gameState.dungeonMap = decodedData.dungeonMap or {}
     end
 
     return gameState

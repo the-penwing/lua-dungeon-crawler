@@ -8,7 +8,7 @@ local gameState = {
     mp = 20,
     maxMP = 20,
     spellCooldown = false,
-    currentRoom = 1,
+    roomCoordinates = { x = 1, y = 1 },
     activeEquipment = {
       weapon = 'rustysword',
       armor = 'none',
@@ -17,10 +17,11 @@ local gameState = {
       { id = 'rustysword', quantity = 1 },
       { id = 'healingpotion', quantity = 1 },
     },
+    bossBeat = false,
+    playerAlive = true,
   },
-  rooms = rooms,
-  bossBeat = false,
-  playerAlive = true,
+  dungeonSeed = 69, -- Store Raw integer Seed for Dungeon Generation
+  dungeonMap = {}, -- Auto Generated Dungeon Based on Seed
 }
 
 return gameState

@@ -1,32 +1,54 @@
-local rooms = require('navigation.rooms')
 local gameState = require('game.gameState')
 local ui = require('ui')
 local combat = require('combat')
 
 local function moveDirection(direction)
-  local currentRoomNum = gameState.player.currentRoom
-  local currentRoomData = rooms.rooms[currentRoomNum]
+  local coords = gameState.player.roomCoordinates
+  local currentKey = coords.x .. ',' .. coords.y
+  local currentRoomData = gameState.dungeonMap[currentKey]
 
   if not currentRoomData.exits or not currentRoomData.exits[direction] then
-    print("\nYou can't go " .. direction .. ' from here!')
+    print("You can't go that way!")
     return false
   end
-  local targetRoomIndex = currentRoomData.exits[direction]
-  local targetRoomData = rooms.loadRoom(targetRoomIndex)
+
+  -- The exit value itself contains the target coordinate string (e.g., "1,2")
+  local targetKey = currentRoomData.exits[direction]
+
+  -- Extract x and y from the "x,y" string to move the player's position
+  local tx, ty = targetKey:match('([^,]+),([^,]+)')
+  gameState.player.roomCoordinates.x = tonumber(tx)
+  gameState.player.roomCoordinates.y = tonumber(ty)
+
+  -- Fetch our newly stepped-into dynamic room node
+  local targetRoomData = gameState.dungeonMap[targetKey]
 
   if targetRoomData then
-    gameState.player.currentRoom = targetRoomIndex
-
     print('\nYou move ' .. direction .. '...')
-    ui.display.displayRoomDescription()
-    if #targetRoomData.enemies > 0 then
+
+    -- Display description (adjust if displayRoomDescription expects old indices)
+    if ui.display.displayRoomDescription then
+      ui.display.displayRoomDescription()
+    else
+      print('Location: ' .. targetRoomData.name)
+    end
+
+    -- Trigger combat if the room isn't cleared and has live enemies
+    if not targetRoomData.isCleared and #targetRoomData.enemies > 0 then
       local success, result = pcall(function()
         return combat.loop.combatLoop(targetRoomData.enemies)
       end)
+
       if not success then
         print('COMBAT ERROR: ' .. tostring(result))
         return false
       end
+
+      -- If combat concludes successfully, mark room cleared
+      if result == true then
+        targetRoomData.isCleared = true
+      end
+      return result
     else
       print('No enemies here.')
       return true

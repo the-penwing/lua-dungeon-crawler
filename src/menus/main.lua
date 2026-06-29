@@ -1,3 +1,4 @@
+-- src menus/main.lua
 local ui = require('ui')
 local function mainMenu()
   ui.clear.clear()

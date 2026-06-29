@@ -4,8 +4,9 @@ local gameState = require('game.gameState')
 local itemFuncs = require('items.funcs')
 
 local function searchRoom()
-  local currentRoomNum = gameState.player.currentRoom
-  local currentRoomData = rooms.rooms[currentRoomNum]
+  local coords = gameState.player.roomCoordinates
+  local currentKey = coords.x .. ',' .. coords.y
+  local currentRoomData = gameState.dungeonMap[currentKey]
 
   -- Safety check if room has no loot or it's empty
   if not currentRoomData.loot or #currentRoomData.loot == 0 then

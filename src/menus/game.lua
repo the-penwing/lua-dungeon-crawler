@@ -3,9 +3,12 @@ local gameState = require('game.gameState')
 local roomsModule = require('navigation.rooms')
 local rooms = roomsModule.rooms
 local function gameMenu()
-  local currentRoom = gameState.player.currentRoom
-  local roomDescription = rooms[currentRoom].description
-  print('\n--- Room ' .. currentRoom .. ': ' .. roomDescription .. ' ---\n')
+  local coords = gameState.player.roomCoordinates
+  local currentKey = coords.x .. ',' .. coords.y
+  local currentRoom = gameState.dungeonMap[currentKey]
+  local roomDescription = currentRoom.name
+
+  print('\n--- ' .. roomDescription .. ' (' .. currentKey .. ') ---\n')
   ui.display.displayGameState()
   print('\nGame Menu:')
   print('  1) Use Item')

@@ -25,7 +25,9 @@ local function displayGameState()
 end
 
 local function displayRoomDescription()
-  print(gameState.rooms[gameState.player.currentRoom].description)
+  local coords = gameState.player.roomCoordinates
+  local currentKey = coords.x .. ',' .. coords.y
+  print(gameState.dungeonMap[currentKey].name)
 end
 
 local function displayEnemies(enemies)
