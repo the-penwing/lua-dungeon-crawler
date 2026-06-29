@@ -10,7 +10,7 @@ local function castFireball(target)
   end
   gameState.player.mp = gameState.player.mp - 3
 
-  target.health = target.health - 20
+  target.hp = target.hp - 20
   print('fireball was a success!!')
   if math.random(1, 100) <= 5 then
     print('but you got burned!!')
@@ -63,7 +63,7 @@ local function choiceSpell(enemies)
           end
           castFireball(target)
           gameState.player.spellCooldown = true
-          if target.health <= 0 then
+          if target.hp <= 0 then
             enemy_module.awardLoot(target)
             enemy_module.handleEnemyDeath(targetIndex, enemies)
           end
