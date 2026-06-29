@@ -11,8 +11,9 @@ local function gameMenu()
   print('  1) Use Item')
   print('  2) Switch Weapon')
   print('  3) Move')
-  print('  4) Rest')
-  print('  5) Save and Main Menu')
+  print('  4) Loot Room')
+  print('  5) Rest')
+  print('  6) Save and Main Menu')
   local validChoice = false
   local choice
   repeat
