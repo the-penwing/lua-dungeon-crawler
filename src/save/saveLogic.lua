@@ -1,32 +1,6 @@
 local gameState = require('game.gameState')
 local json = require('libs.json')
 
--- A simple shift key to scramble the data (0-255)
-local ENCRYPTION_KEY = 73
-
--- Scramble by shifting bytes forward (pure math, no bitwise operators)
-local function scramble(data)
-  local result = {}
-  for i = 1, #data do
-    local byte = string.byte(data, i)
-    byte = (byte + ENCRYPTION_KEY) % 256
-    table.insert(result, string.char(byte))
-  end
-  return table.concat(result)
-end
-
--- Descramble by shifting bytes backward
-local function descramble(data)
-  local result = {}
-  for i = 1, #data do
-    local byte = string.byte(data, i)
-    -- Adding 256 keeps the expression positive before the modulo calculation
-    byte = (byte - ENCRYPTION_KEY + 256) % 256
-    table.insert(result, string.char(byte))
-  end
-  return table.concat(result)
-end
-
 local function saveGame(filename)
   local saveData = {
     player = gameState.player,
@@ -36,12 +10,11 @@ local function saveGame(filename)
   }
 
   local encodedData = json.encode(saveData)
-  local secureData = scramble(encodedData)
 
   -- 'wb' ensures binary safety across platform writes
   local saveFile = io.open(filename, 'wb')
   if saveFile then
-    saveFile:write(secureData)
+    saveFile:write(encodedData)
     saveFile:close()
     print('Game saved successfully!')
   else
@@ -54,75 +27,32 @@ local function loadGame(filename)
   local saveFile = io.open(filename, 'rb')
 
   if saveFile then
-    local secureData = saveFile:read('*a')
+    local saveData = saveFile:read('*a')
     saveFile:close()
 
-    local rawJson = descramble(secureData)
-
     -- Protects against parser crashes if the file was modified/corrupted
-    local success, decodedData = pcall(json.decode, rawJson)
+    local success, decodedData = pcall(json.decode, saveData)
     if not success or not decodedData then
-      print('Error: Corrupt or manipulated save file!')
+      print('Error: Corrupt save file!')
       return nil
     end
 
-    local itemFuncs = require('items.funcs')
-
-    -- Enforce legal limits and sanity check fields
     if decodedData and decodedData.player then
       local p = decodedData.player
-
-      p.maxHP = p.maxHP or 100
-      p.maxMP = p.maxMP or 20
-      p.hp = math.min(tonumber(p.hp) or p.maxHP, p.maxHP)
-      p.mp = math.min(tonumber(p.mp) or p.maxMP, p.maxMP)
-
-      -- Verify player coordinate tracking structure instead of flat room indexes
-      if
-        not p.roomCoordinates
-        or type(p.roomCoordinates.x) ~= 'number'
-        or type(p.roomCoordinates.y) ~= 'number'
-      then
-        p.roomCoordinates = { x = 1, y = 1 }
-      end
-
-      -- Verify items exist and clip unearned stack limits
-      local sanitizedInventory = {}
-      if type(p.inventory) == 'table' then
-        for _, invItem in ipairs(p.inventory) do
-          local officialItem = itemFuncs.getItemById(invItem.id)
-          if officialItem then
-            local qty = tonumber(invItem.quantity) or 1
-            if officialItem.type == 'consumable' then
-              qty = math.min(qty, 10)
-            elseif officialItem.type == 'weapon' then
-              qty = 1
-            end
-            if qty > 0 then
-              table.insert(sanitizedInventory, { id = invItem.id, quantity = qty })
-            end
-          end
-        end
-      end
-      p.inventory = sanitizedInventory
-
-      if not p.activeEquipment then
-        p.activeEquipment = { weapon = 'rustysword', armor = 'none' }
-      end
-      if not itemFuncs.getItemById(p.activeEquipment.weapon) then
-        p.activeEquipment.weapon = 'rustysword'
-      end
 
       -- Apply values directly to the active state table
       gameState.player = p
 
-      -- Fully restore your seed and procedural layout state
+      -- Fully restore the seed and procedural layout state
       gameState.bossBeat = decodedData.bossBeat or false
       gameState.dungeonSeed = decodedData.dungeonSeed or 69
       gameState.dungeonMap = decodedData.dungeonMap or {}
-    end
 
-    return gameState
+      return gameState
+    else
+      print('Error: Corrupt save file!')
+      return nil
+    end
   else
     print('Error: Failed to load game!')
     return nil
