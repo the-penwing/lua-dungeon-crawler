@@ -6,6 +6,7 @@ local menus = require('menus')
 local navigation = require('navigation')
 local generator = require('navigation.generator')
 local mapVisualiser = require('ui.map')
+local save = require('save')
 local function mainLoop()
   while true do
     local choice = menus.main.mainMenu()
@@ -16,7 +17,7 @@ local function mainLoop()
       generator.generateDungeon()
       enterGame = true
     elseif choice == 2 then
-      if game.save.loadGame('save.json') then
+      if save.saveLogic.loadGame('save.json') then
         enterGame = true
       else
         print('Error: Failed to load save file!')
@@ -41,7 +42,7 @@ local function mainLoop()
         elseif gameMenuChoice == 6 then
           game.rest.rest()
         elseif gameMenuChoice == 7 then
-          game.save.saveGame('save.json')
+          save.saveLogic.saveGame('save.json')
           break
         end
       until false
