@@ -17,7 +17,7 @@ local function mainLoop()
       generator.generateDungeon()
       enterGame = true
     elseif choice == 2 then
-      if save.saveLogic.loadGame('save.json') then
+      if save.saveLogic.loadGame() then
         enterGame = true
       else
         print('Error: Failed to load save file!')
@@ -42,7 +42,7 @@ local function mainLoop()
         elseif gameMenuChoice == 6 then
           game.rest.rest()
         elseif gameMenuChoice == 7 then
-          save.saveLogic.saveGame('save.json')
+          save.saveLogic.saveGame()
           break
         end
       until false

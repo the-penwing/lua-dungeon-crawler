@@ -1,7 +1,17 @@
 local gameState = require('game.gameState')
+local fileLocation = require('save.fileLocation')
 local json = require('libs.json')
 
-local function saveGame(filename)
+local SAVE_FILENAME <const> = 'save.json'
+
+local function saveGame()
+  local dir = fileLocation.appDataDir()
+  if not dir then
+    print('Error: Unknown OS, cannot save!')
+    return nil
+  end
+  fileLocation.ensureDir(dir)
+  local filepath = fileLocation.pathJoin(dir, SAVE_FILENAME)
   local saveData = {
     player = gameState.player,
     bossBeat = gameState.bossBeat,
@@ -12,7 +22,7 @@ local function saveGame(filename)
   local encodedData = json.encode(saveData)
 
   -- 'wb' ensures binary safety across platform writes
-  local saveFile = io.open(filename, 'wb')
+  local saveFile = io.open(filepath, 'wb')
   if saveFile then
     saveFile:write(encodedData)
     saveFile:close()
@@ -22,9 +32,14 @@ local function saveGame(filename)
   end
 end
 
-local function loadGame(filename)
-  -- 'rb' reads raw bytes exactly as written, completely avoiding trailing garbage bugs
-  local saveFile = io.open(filename, 'rb')
+local function loadGame()
+  local dir = fileLocation.appDataDir()
+  if not dir then
+    print('Error: Unknown OS, cannot locate save!')
+    return nil
+  end
+  local filepath = fileLocation.pathJoin(dir, SAVE_FILENAME)
+  local saveFile = io.open(filepath, 'rb')
 
   if saveFile then
     local saveData = saveFile:read('*a')
