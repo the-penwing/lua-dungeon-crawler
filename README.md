@@ -1,6 +1,6 @@
 # Lua Dungeon Crawler
 
-A Dungeon Crawler written in Lua compiled as standalone binaries.
+A Dungeon Crawler written in Lua.
 
 <img src="./ai-free-badge.svg" width="150">
 
@@ -15,18 +15,19 @@ There are 3 ways to install / play the game:
 ### Running via Lua
 
 **Requirements:**
+
 - Lua 5.5 in your path
 
 ```bash
-# Run the bundled script
-lua ./src/main.lua
+cd src
+lua main.lua
 ```
 
 ---
 
 ### Nix
 
-If you are using Nix, you don't need to manually clone, bundle, or compile anything. Nix uses my cross-compilation matrix to automagically spit out an optimized executable tailored to your system.
+If you are using Nix, you don't need to manually clone or install anything.
 
 **Run Instantly Without Installation**
 

@@ -29,7 +29,7 @@ Your directory structure must match this layout for paths to align:
     │   ├── dungeon-crawler-cli.c
     │   └── building.md
     ├── src/
-    │   ├── dungeon-crawler.lua   # Core entry point
+    │   ├── main.lua   # Core entry point
     │   └── (other game modules)
     ├── README.md
     └── LICENSE
@@ -39,12 +39,12 @@ Your directory structure must match this layout for paths to align:
 
 ## Manual Step-by-Step Build
 
-If you are not using the automatic `nix build .#all` multi-target engine, you can build manually inside the `c-wrapper` directory following these steps:
+You can build manually inside the `c-wrapper` directory following these steps:
 
 ### 1. Bundle Multi-file Source Into One File
 
 ```bash
-lunar-bundler ../src/dungeon-crawler.lua --output dungeon-crawler.lua
+lunar-bundler ../src/main.lua --output dungeon-crawler.lua
 ```
 
 ### 2. Compile Consolidated Script to Bytecode
